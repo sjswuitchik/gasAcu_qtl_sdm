@@ -2,7 +2,7 @@
 
 Authors:
 
-Sara Wuitchik (Postdoctoral Fellow, Boston University & Harvard University, sjswuit@g.harvard.edu)
+Sara Wuitchik (Postdoctoral Associate, Boston University & Harvard University, sjswuit@g.harvard.edu)
 
 Stephanie Mogensen (Ph.D. Candidate, University of Calgary, stephanie.mogensen@ucalgary.ca)
 
