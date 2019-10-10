@@ -1,9 +1,8 @@
-# Threespine Stickleback SDMs with genetic traits
+# Threespine Stickleback SDMs with genetic trait integration
 
 Scripts for the QTL analyses and mechanistic species distribution modelling from Wuitchik et al. 2019 (in prep)
 
-
-Authors
+Authors:
 
 Sara Wuitchik (Postdoctoral Fellow, Boston University & Harvard University, sjswuit@g.harvard.edu)
 
