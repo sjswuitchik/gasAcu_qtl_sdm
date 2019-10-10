@@ -1,7 +1,5 @@
 # Threespine Stickleback SDMs with genetic trait integration
 
-Scripts for the QTL analyses and mechanistic species distribution modelling from Wuitchik et al. 2019 (in prep)
-
 Authors:
 
 Sara Wuitchik (Postdoctoral Fellow, Boston University & Harvard University, sjswuit@g.harvard.edu)
@@ -17,3 +15,5 @@ Heather A Jamniczky (Associate Professor, University of Calgary, hajamnic@ucalga
 Rowan DH Barrett (Associate Professor, McGill University, rowan.barrett@mcgill.ca)
 
 Sean M Rogers (Associate Professor, University of Calgary, srogers@ucalgary.ca)
+
+Scripts for the QTL analyses and mechanistic species distribution modelling from Wuitchik et al. 2019 (in prep). 
