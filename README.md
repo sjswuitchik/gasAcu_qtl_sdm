@@ -8,7 +8,7 @@ Sara Wuitchik (Postdoctoral Fellow, Boston University & Harvard University, sjsw
 
 Stephanie Mogensen (Ph.D. Candidate, University of Calgary, stephanie.mogensen@ucalgary.ca)
 
-Tegan Barry (University of Calgary, tnbarry@ucalgary.ca)
+Tegan Barry (Instructor, University of Calgary, tnbarry@ucalgary.ca)
 
 Antoine Paccard (Research Associate, McGill University Genome Center, antoine.paccard@mcgill.ca)
 
