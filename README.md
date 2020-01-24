@@ -1,4 +1,4 @@
-# Threespine Stickleback SDMs with genetic trait integration
+# Threespine Stickleback SDMs with trait integration
 
 Authors:
 
@@ -17,4 +17,4 @@ Rowan DH Barrett (Associate Professor, McGill University, rowan.barrett@mcgill.c
 Sean M Rogers (Associate Professor, University of Calgary, srogers@ucalgary.ca)
 
 
-Scripts for the QTL analyses and mechanistic species distribution modelling from Wuitchik et al. 2019 (in prep). 
+Scripts for the QTL analyses and mechanistic species distribution modelling from Wuitchik et al. (in prep). 
