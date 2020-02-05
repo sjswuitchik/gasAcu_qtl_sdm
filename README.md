@@ -17,4 +17,4 @@ Rowan DH Barrett (Associate Professor, McGill University, rowan.barrett@mcgill.c
 Sean M Rogers (Associate Professor, University of Calgary, srogers@ucalgary.ca)
 
 
-Scripts for the QTL analyses and mechanistic species distribution modelling from Wuitchik et al. (in prep). Currently, these scripts show the general analyses but are not optomized for generalizable or automatic running. There is a small amount of manual editing/combining of files to create the R/qtl matrices from the LepMap3 output.
+Scripts for the QTL analyses and mechanistic species distribution modelling from Wuitchik et al. (in prep). Currently, these scripts show the general analyses but are not optomized for generalizable or automatic running. There is a small amount of manual editing/combining of files required to create the R/qtl matrices from the LepMap3 output.
