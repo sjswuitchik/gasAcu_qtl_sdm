@@ -1,3 +1,4 @@
+# SJSW 2019
 #### A5A12 - Klein 1 ####
 #### chr 1 ####
 chr1 <- read.cross(file = "k1_chr1_input.csv", format = "csv", na.strings = c("-1","NA"), genotypes = c("0","1","2"), alleles = c("A","B"), estimate.map = F)
