@@ -160,7 +160,7 @@ D[1:1253,]<-NA
 #Plot to confirm this worked
 plot(D)
 
-#For saving, commented out to avoid accidently overwrites
+#For saving, commented out to avoid accidental overwrites
 #writeRaster(D,"path/Processed Files/BathyWarm.asc",format="ascii")
 #This file is converted into a polygon in arcgis. 
 
