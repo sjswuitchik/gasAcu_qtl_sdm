@@ -76,10 +76,6 @@ lstext <- c("Suitable Habitat")
 tiff("Figs/suitable_current.tif")
 plot(D,col="grey",axes=F,legend=F) 
 plot(A,add=T,col=cols[4],axes=F) #Bathymetry & Sea Ice
-text(locator(1), labels = c("Bering Sea"), cex = 1.0) #locator(1) allows mouse-click placement in quartz, rather than coordinate systems placement
-text(locator(1), labels = c("WA"), cex = 0.75)
-text(locator(1), labels = c("AK"), cex = 0.75)
-text(locator(1), labels = c("Pacific Ocean"), cex = 1.0)
 legend("bottomleft", legend = lstext, fill = cols[4], bg = "white")
 dev.off()
 
