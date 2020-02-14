@@ -39,6 +39,8 @@ dev.off()
 # 2 = within physiological limits
 # 3 = normal behaviour
 
+# NB: RCP 4.5 current and RCP 8.5 current are identical (because the current day model is not effected by forecasting scenarios) so for ease of coding, only RCP 4.5 current day is used here
+
 #### Comparison 1: RCP 4.5 no evol vs evol in warmer world (r4EW/r4NW) ####
 
 # Replace the raster components we don't care about with NA (ie/ isolating the 'normal behaviour' envelope)
@@ -112,3 +114,9 @@ area(poly.r4EW)/area(poly.r4NC)
 
 # Difference in the area
 area(poly.r8EW)/area(poly.r4NC)
+
+#### Comparison 5: RCP 4.5 current vs no evol warmer (r4NW/r4NC) ####
+area(poly.r4NW)/area(poly.r4NC)
+
+#### Comparison 6: RCP 8.5 current vs no evol warmer (r8NW/r4NC) ####
+area(poly.r8NW)/area(poly.r4NC)
