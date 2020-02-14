@@ -42,7 +42,7 @@ dev.off()
 #### Comparison 1: RCP 4.5 no evol vs evol in warmer world (r4EW/r4NW) ####
 
 # Replace the raster components we don't care about with NA (ie/ isolating the 'normal behaviour' envelope)
-# NB: extents are the same between rasters, so don't need to match
+# NB: extents are the same between rasters, so don't need to change anything
 r4NW[r4NW!=3]<-NA
 pdf("r4NW.pdf")
 plot(r4NW)
