@@ -101,6 +101,9 @@ dev.off()
 #Change projection to an equal area projection (useable for areas N of 45 lat)
 proj4string(r4NC)<-CRS("+init=epsg:3572") 
 
+# Convert to polygon
+poly.r4NC<-rasterToPolygons(r4NC,na.rm=TRUE,dissolve=TRUE)
+
 #Difference in the area
 area(poly.r4EW)/area(poly.r4NC)
 
