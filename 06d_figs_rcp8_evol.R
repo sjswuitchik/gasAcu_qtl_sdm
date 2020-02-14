@@ -1,7 +1,9 @@
-# SM 2019
+# SM & SJSW 2019-20
 #Make Figures for the distribution data
 
 ###########################################################################################################################
+
+rm(list=ls(all=TRUE))
 
 library(raster)
 library(rgeos)
@@ -12,10 +14,11 @@ library(ncdf4)
 library(viridis)
 
 ###########################################################################################################################
+setwd("~/Desktop/UCalgary/Main publication/Coding")
 
 #Load raster of combined tolerance and erratic behaviour
-COMBOTE<-raster("Processed_files/COMBOTE_Jan13_rcp4_tolerrat.asc")
-COMBOTEWARM<-raster("Processed_files/COMBO_TOL_E_W_Jan13_rcp4_tolerrat.asc")
+COMBOTE<-raster("Processed_files/COMBOTE_Jan13_rcp8_tolerrat.asc")
+COMBOTEWARM<-raster("Processed_files/COMBO_TOL_E_W_Jan13_rcp8_tolerrat.asc")
 
 #Load bathymetry to get coastlines (nc file)
 Bathy<-nc_open("GEBCO_2014_2D_-179.7777_45.2207_-120.8539_76.3978.nc")
@@ -56,27 +59,16 @@ A<-raster("SaraUseThis.tif")
 
 #Plot-Current World
 viridis <- viridis_pal(direction = 1, option = "C")
-cols <- viridisLite::viridis(4)
-ltext<-c("Outside Physiol Limits","Within Physiol Limits","Normal Behav") #legend text
-plot(D, col="grey",axes=F,legend=F)
-plot(COMBOTE, add=T, legend=F, at=c(0,2,3),col=cols[1:3])
-legend("bottomleft",legend=ltext,fill=cols,bg="white")
+cols <- viridisLite::viridis(5)
+#ltext<-c("Outside Physiol Limits","Within Physiol Limits","Normal Behav") #legend text
+#plot(D, col="grey",axes=F,legend=F)
+#plot(COMBOTE, add=T, legend=F, at=c(0,2,3),col=cols[1:3])
+#legend("bottomleft",legend=ltext,fill=cols,bg="white")
 
 #Plot-Warmer World
-tiff("Figs/rcp4_tolerrat_warmer.tiff")
+pdf("Figs/rcp8_evol_warmer.pdf")
 plot(D, col="grey",axes=F,legend=F)
 plot(COMBOTEWARM, add=T, legend=F, at=c(2,3),col=cols[2:3])
 legend("bottomleft",legend=ltext,fill=cols,bg="white")
 dev.off()
-
-#Plot-Bathymetry and Sea Ice 
-lstext <- c("Suitable Habitat")
-plot(D,col="grey",axes=F,legend=F) 
-plot(A,add=T,col=cols[4],axes=F) #Bathymetry & Sea Ice
-legend("bottomleft", legend = lstext, fill = cols[4], bg = "white")
-
-#Plot-Bathymetry and Sea Ice Warmer
-plot(D,col="grey",axes=F,legend=F) 
-plot(B,add=T,col=cols[4],axes=F,legend=F) #Warmer Bathymetry
-legend("bottomleft", legend = lstext, fill = cols[4], bg = "white")
 

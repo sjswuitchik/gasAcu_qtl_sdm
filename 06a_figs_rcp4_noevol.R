@@ -1,7 +1,9 @@
-# SM & SJSW 2019/20
+# SM & SJSW 2019-20
 #Make Figures for the distribution data
 
 ###########################################################################################################################
+
+rm(list=ls(all=TRUE))
 
 library(raster)
 library(rgeos)
@@ -12,6 +14,7 @@ library(ncdf4)
 library(viridis)
 
 ###########################################################################################################################
+setwd("~/Desktop/UCalgary/Main publication/Coding")
 
 #Load raster of combined tolerance and erratic behaviour
 COMBOTE<-raster("Processed_files/COMBOTE_Jan13_rcp4_noevol.asc")
@@ -56,55 +59,27 @@ A<-raster("SaraUseThis.tif")
 
 #Plot-Current World
 viridis <- viridis_pal(direction = 1, option = "C")
-cols <- viridisLite::viridis(4)
+cols <- viridisLite::viridis(5)
 ltext<-c("Outside Physiol Limits","Within Physiol Limits","Normal Behav") #legend text
-tiff("Figs/rcp4_noevol_current.tif")
+pdf("Figs/rcp4_noevol_current.pdf")
 plot(D, col="grey",axes=F,legend=F)
 plot(COMBOTE, add=T, legend=F, at=c(0,2,3),col=cols[1:3])
 legend("bottomleft",legend=ltext,fill=cols,bg="white")
 dev.off()
 
 #Plot-Warmer World
-tiff("Figs/rcp4_noevol_warmer.tif")
+pdf("Figs/rcp4_noevol_warmer.pdf")
 plot(D, col="grey",axes=F,legend=F)
 plot(COMBOTEWARM, add=T, legend=F, at=c(2,3),col=cols[2:3])
 legend("bottomleft",legend=ltext,fill=cols,bg="white")
 dev.off()
 
-#Plot-Bathymetry and Sea Ice - Current
-lstext <- c("Suitable Habitat")
-tiff("Figs/suitable_current.tif")
-plot(D,col="grey",axes=F,legend=F) 
-plot(A,add=T,col=cols[4],axes=F) #Bathymetry & Sea Ice
-legend("bottomleft", legend = lstext, fill = cols[4], bg = "white")
+# Plot - Bathy/sea ice current + warmer
+lstext <- c("Suitable Habitat Warmer", "Suitable Habitat Current")
+pdf("Figs/suitable_combo.pdf")
+plot(D,col="grey",axes=F,legend=F)
+plot(B,add=T,col=cols[4],axes=F,legend=F)
+plot(A,add=T,col=cols[5],axes=F)
+legend("bottomleft",legend=lstext,fill=cols[4:5],bg="white")
 dev.off()
 
-#Plot-Bathymetry and Sea Ice Warmer
-tiff("Figs/suitable_warmer.tif")
-plot(D,col="grey",axes=F,legend=F) 
-plot(B,add=T,col=cols[4],axes=F,legend=F) #Warmer Bathymetry
-legend("bottomleft", legend = lstext, fill = cols[4], bg = "white")
-dev.off()
-
-## Create suitable habitat rasters for area calculations
-# check that the rasters are properly plotted without the NA continent
-pdf("suitable_current.pdf")
-plot(A)
-dev.off()
-pdf("suitable_warmer.pdf")
-plot(B)
-dev.off()
-
-# Extents need to be identical, make the smaller extent match the larger
-A <- extend(A,B)
-
-# Change projection to an equal area projection (useable for areas N of 45 lat) 
-proj4string(B) <- CRS("+init=epsg:3572")
-proj4string(A) <- CRS("+init=epsg:3572")
-
-# Convert to polygons
-poly.A <- rasterToPolygons(A,na.rm=TRUE,dissolve=TRUE)
-poly.B <- rasterToPolygons(B,na.rm=TRUE,dissolve=TRUE)
-
-# Calculate the proportional difference in area
-area(poly.B)/area(poly.A)
