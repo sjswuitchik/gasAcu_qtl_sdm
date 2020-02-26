@@ -83,3 +83,27 @@ plot(A,add=T,col=cols[5],axes=F)
 legend("bottomleft",legend=lstext,fill=cols[4:5],bg="white")
 dev.off()
 
+
+## Create suitable habitat rasters for area calculations
+# check that the rasters are properly plotted without the NA continent
+pdf("suitable_current.pdf")
+plot(A)
+dev.off()
+pdf("suitable_warmer.pdf")
+plot(B)
+dev.off()
+
+# Extents need to be identical, make the smaller extent match the larger
+A <- extend(A,B)
+
+# Change projection to an equal area projection (useable for areas N of 45 lat) 
+proj4string(B) <- CRS("+init=epsg:3572")
+proj4string(A) <- CRS("+init=epsg:3572")
+
+# Convert to polygons
+poly.A <- rasterToPolygons(A,na.rm=TRUE,dissolve=TRUE)
+poly.B <- rasterToPolygons(B,na.rm=TRUE,dissolve=TRUE)
+
+# Calculate the proportional difference in area
+area(poly.B)/area(poly.A)
+
