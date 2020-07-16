@@ -2,11 +2,11 @@
 
 Authors:
 
-Sara Wuitchik (Postdoctoral Associate, Boston University & Harvard University, sjswuit@g.harvard.edu)
+Sara Wuitchik (Postdoctoral Fellow, Harvard University & Boston University, sjswuit@g.harvard.edu)
 
 Stephanie Mogensen (Ph.D. Candidate, University of Calgary, stephanie.mogensen@ucalgary.ca)
 
-Tegan Barry (Anatomy Instructor for External Health Professional Groups, University of Calgary, tnbarry@ucalgary.ca)
+Tegan Barry (Lecturer, University of Lethbridge, tnbarry@ucalgary.ca)
 
 Antoine Paccard (Research Associate, McGill University Genome Center, antoine.paccard@mcgill.ca)
 
