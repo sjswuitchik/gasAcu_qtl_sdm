@@ -153,6 +153,7 @@ area(poly.r4EW)/area(poly.r4EWadjPVE)
 area(poly.r8EW)/area(poly.r8EWadjPVE)
 
 #### Comparison 9: RCP 4.5 current vs adj PVE evol warmer (r4EWadjPVE/r4NC) ####
+# NB: need to run whole script to get the properly extent-matched r4NC here
 area(poly.r4EWadjPVE)/area(poly.r4NC)
 
 #### Comparison 10: RCP 8.5 current vs adj PVE evol warmer (r8EWadjPVE/r4NC) ####
