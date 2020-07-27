@@ -1,5 +1,5 @@
 # SJSW 2019
-# Note: currently quite clunky, would be better optomized with for loops
+# Note: currently quite clunky and repetitive, would be better optomized with for loops
 
 # Download snpEff, which includes a useful splitting function to separate a single vcf into chromosomal vcfs
 
