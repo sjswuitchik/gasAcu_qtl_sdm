@@ -1,5 +1,5 @@
 # SJSW 2019
-# Note: currently quite clunky, would be better optomized with for loops
+# Note: currently quite clunky and repetitive, would be better optomized with for loops
 
 # Download snpEff, which includes a useful splitting function to separate a single vcf into chromosomal vcfs
 
@@ -28,10 +28,10 @@ java -cp bin/ OrderMarkers2 data=chr1_filter.call map=chr1_map1js.txt useKosambi
 ## repeat for each chromosome
 
 ## cut each map for lm2rqtl_chr.py script
-cut -f 1-2 chr*_ordered.txt > marker_pos_chr*.txt
+cut -f 1-2 chr1_ordered.txt > marker_pos_chr1.txt
 
 # run each map through lm2rqtl.py script
-python lm2rqtl_chr*.py marker_pos_chr*.txt gasAcu_lib123_oct4.group*.vcf 
+python lm2rqtl_chr1.py marker_pos_chr1.txt gasAcu_lib123_oct4.groupI.vcf 
 
-plink --vcf gasAcu_lib123_oct4_concatID_chr*.vcf --extract LepMap3_snps_for_vcftools_chr*.txt --allow-extra-chr --recode vcf --out klein_rqtl_chr*
-vcftools --vcf klein_rqtl_chr*.vcf --012 --out rqtl_chr*
+plink --vcf gasAcu_lib123_oct4_concatID_chr1.vcf --extract LepMap3_snps_for_vcftools_chr1.txt --allow-extra-chr --recode vcf --out klein_rqtl_chr1
+vcftools --vcf klein_rqtl_chr1.vcf --012 --out rqtl_chr1
