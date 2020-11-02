@@ -33,6 +33,14 @@ errat.ub<-25
 pref.lb<-13.6
 pref.ub<-19.9
 
+#Warmer world - evolution of traits
+evol.tol.lb <- tol.lb - 0.9
+evol.tol.ub <- tol.ub + 1.6
+evol.errat.lb <- errat.lb - 1.4
+evol.errat.ub <- errat.ub + 1.6
+evol.pref.lb <- pref.lb
+evol.pref.ub <- pref.ub
+
 #Process Temperature data, to get to min temp, max temp, min of 25% percentile, max of 25% percentile, and median
 #Set up output matrices
 
@@ -166,9 +174,11 @@ temp.min25W<-crop(temp.min25W,extent(bathywarm))
 temp.max25W<-mask(r.max25D,bathywarm) 
 temp.max25W<-crop(temp.max25W,extent(bathywarm))
 
+
 #Warm the waters, based on location
 
 #Winter (based on temp.min25)-need to set up with lat/lon
+
 exwin1<-c(extent(temp.min25W)[1],extent(temp.min25W)[2],62.22,extent(temp.min25W)[4]) #extent of section 1 warming (Northern)
 exwin2<-c(extent(temp.min25W)[1],extent(temp.min25W)[2],60.33,62.22) #extent of section 2 warming
 exwin3<-c(extent(temp.min25W)[1],extent(temp.min25W)[2],48.88,60.33) #extent of section 3 warming 
@@ -188,24 +198,29 @@ CellsWin7<-cellsFromExtent(temp.max25W,exwin3)
 CellsWin8<-cellsFromExtent(temp.max25W,exwin4) 
 
 #Warm the min temps
-temp.min25WARMED<-temp.min25W #Create new raster for warmed
-temp.min25WARMED[CellsWin1]<-temp.min25W[CellsWin1]+3 #Warm it by relevant amounts for RCP 8.5, for the diff. extents
-temp.min25WARMED[CellsWin2]<-temp.min25W[CellsWin2]+3.6 
-temp.min25WARMED[CellsWin3]<-temp.min25W[CellsWin3]+3 
-temp.min25WARMED[CellsWin4]<-temp.min25W[CellsWin4]+2.8 
+#Create new raster for warmed
+temp.min25WARMED<-temp.min25W
+#Warm it by relevant amounts for RCP 4.5, for the diff. extents
+temp.min25WARMED[CellsWin1]<-temp.min25W[CellsWin1]+2 
+temp.min25WARMED[CellsWin2]<-temp.min25W[CellsWin2]+2.4 
+temp.min25WARMED[CellsWin3]<-temp.min25W[CellsWin3]+1.8 
+temp.min25WARMED[CellsWin4]<-temp.min25W[CellsWin4]+1.6 
 
 #Warm the max temps
-temp.max25WARMED<-temp.max25W #Create new raster
-temp.max25WARMED[CellsWin5]<-temp.max25W[CellsWin5]+3 #Warm it by relevant amounts for RCP 8.5, for the diff. extents
-temp.max25WARMED[CellsWin6]<-temp.max25W[CellsWin6]+3.6 
-temp.max25WARMED[CellsWin7]<-temp.max25W[CellsWin7]+3 
-temp.max25WARMED[CellsWin8]<-temp.max25W[CellsWin8]+2.8 
+#Create new raster
+temp.max25WARMED<-temp.max25W 
+#Warm it by relevant amounts for RCP 4.5, for the diff. extents
+temp.max25WARMED[CellsWin5]<-temp.max25W[CellsWin5]+2 
+temp.max25WARMED[CellsWin6]<-temp.max25W[CellsWin6]+2.4 
+temp.max25WARMED[CellsWin7]<-temp.max25W[CellsWin7]+1.8 
+temp.max25WARMED[CellsWin8]<-temp.max25W[CellsWin8]+1.6 
 
 ########################################################################################################################
 #Determine presence/absence based on temperature tolereance, erratic behaviour, preference
 #Values from stickleback parameter summary file
 
 #Create, tolerance, errat, pref
+
 tol<-errat<-pref<-matrix(NA,nrow=dim(temp.max)[1],ncol=dim(temp.max)[2])
 m<-1
 
@@ -280,10 +295,10 @@ for (i in 1:dim(temp.min25WARMED)[1])
 			next		
 			}
 		if (is.na(temp.min25WARMED[i,p])=='TRUE') next
-		if (temp.min25WARMED[i,p]<tol.lb | temp.max25WARMED[i,p]>tol.ub) tolW[m,n]<-0
-		if (temp.min25WARMED[i,p]>=tol.lb & temp.max25WARMED[i,p]<=tol.ub) tolW[m,n]<-1
-		if (temp.min25WARMED[i,p]<errat.lb | temp.max25WARMED[i,p]>errat.ub) erratW[m,n]<-0
-		if (temp.min25WARMED[i,p]>=errat.lb & temp.max25WARMED[i,p]<=errat.ub) erratW[m,n]<-1
+		if (temp.min25WARMED[i,p]<evol.tol.lb | temp.max25WARMED[i,p]>evol.tol.ub) tolW[m,n]<-0
+		if (temp.min25WARMED[i,p]>=evol.tol.lb & temp.max25WARMED[i,p]<=evol.tol.ub) tolW[m,n]<-1
+		if (temp.min25WARMED[i,p]<evol.errat.lb | temp.max25WARMED[i,p]>evol.errat.ub) erratW[m,n]<-0
+		if (temp.min25WARMED[i,p]>=evol.errat.lb & temp.max25WARMED[i,p]<=evol.errat.ub) erratW[m,n]<-1
 		n<-n+1
 		}
 		m<-m+1
@@ -332,10 +347,11 @@ extent(TOL)<-extent(ERRAT)<-extent(PREF)<-extent(COMBOTE)<-extent(temp.min)
 extent(TOLW)<-extent(ERRATW)<-extent(COMBOTEW)<-extent(temp.min25WARMED)
 
 #Save rasters (use ",overwrite=TRUE" to overwrite files, not in code to avoid accidents)
-writeRaster(TOL,"Processed_files/TOL_Jan13_rcp8_noevol.asc",format="ascii")
-writeRaster(ERRAT,"Processed_files/ERRAT_Jan13_rcp8_noevol.asc",format="ascii")
-writeRaster(PREF,"Processed_files/PREF_Jan13_rcp8_noevol.asc",format="ascii")
-writeRaster(COMBOTE,"Processed_files/COMBOTE_Jan13_rcp8_noevol.asc",format="ascii")
-writeRaster(TOLW,"Processed_files/TOLW_Jan13_rcp8_noevol.asc",format="ascii")
-writeRaster(ERRATW,"Processed_files/ERRATW_Jan13_rcp8_noevol.asc",format="ascii")
-writeRaster(COMBOTEW,"Processed_files/COMBO_TOL_E_W_Jan13_rcp8_noevol.asc",format="ascii")
+writeRaster(TOL,"Processed_files/TOL_Jul16_rcp4_tolerrat_adjPVE.asc",format="ascii")
+writeRaster(ERRAT,"Processed_files/ERRAT_Jul16_rcp4_tolerrat_adjPVE.asc",format="ascii")
+writeRaster(PREF,"Processed_files/PREF_Jul16_rcp4_tolerrat_adjPVE.asc",format="ascii")
+writeRaster(COMBOTE,"Processed_files/COMBOTE_Jul16_rcp4_tolerrat_adjPVE.asc",format="ascii")
+writeRaster(TOLW,"Processed_files/TOLW_Jul16_rcp4_tolerrat_adjPVE.asc",format="ascii")
+writeRaster(ERRATW,"Processed_files/ERRATW_Jul16_rcp4_tolerrat_adjPVE.asc",format="ascii")
+writeRaster(COMBOTEW,"Processed_files/COMBO_TOL_E_W_Jul16_rcp4_tolerrat_adjPVE.asc",format="ascii")
+

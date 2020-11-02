@@ -1,5 +1,4 @@
-# SM 2019
-#Code for reading in data from netcdf files, and creating rasters of stickleback tolerance/erratic behaviour/tolerance zones
+setwd("/n/holylfs/LABS/informatics/swuitchik/gasAcu_dist")
 
 library (ncdf4)
 library(raster)
@@ -10,21 +9,12 @@ library(maptools)
 
 SST<-nc_open("Temp2014.nc")
 
-#Save file details to a text file (comment in to view)
-#{
- #sink('Temp2014.nc.txt')
- #print(SST)
- #sink()
-#}
-
 lon<-ncvar_get(SST,"lon")
 lat<-ncvar_get(SST,"lat")
 t<-ncvar_get(SST,"time")
 
 Temp.array<-ncvar_get(SST,"sst")
 dim(Temp.array)
-
-#Set temp tolerance, erratic behaviour, and preferences
 
 tol.lb<-0.9
 tol.ub<-31.9
@@ -34,23 +24,18 @@ pref.lb<-13.6
 pref.ub<-19.9
 
 #Warmer world - evolution of traits
-evol.tol.lb <- tol.lb - 2.5
-evol.tol.ub <- tol.ub + 2.5
+evol.tol.lb <- tol.lb - 0.9
+evol.tol.ub <- tol.ub 
 evol.errat.lb <- errat.lb - 2.5
-evol.errat.ub <- errat.ub + 2.5
-evol.pref.lb <- pref.lb
+evol.errat.ub <- errat.ub 
+evol.pref.lb <- pref.lb 
 evol.pref.ub <- pref.ub
-
-#Process Temperature data, to get to min temp, max temp, min of 25% percentile, max of 25% percentile, and median
-#Set up output matrices
 
 MIN<-matrix(-1000,nrow=dim(Temp.array)[1],ncol=dim(Temp.array)[2])
 MAX<-matrix(-1000,nrow=dim(Temp.array)[1],ncol=dim(Temp.array)[2])
 MIN25<-matrix(-1000,nrow=dim(Temp.array)[1],ncol=dim(Temp.array)[2])
 MAX25<-matrix(-1000,nrow=dim(Temp.array)[1],ncol=dim(Temp.array)[2])
 MEDIAN<-matrix(-1000,nrow=dim(Temp.array)[1],ncol=dim(Temp.array)[2])
-
-#Process the temp data: Find min, max, median value in each location
 
 for (jj in 1:dim(Temp.array)[1])
 {
@@ -64,7 +49,6 @@ for (jj in 1:dim(Temp.array)[1])
 	}
 }
 
-#Find average of upper and lower quartile in each location (364 days of the year mean lower 25 percentile is from days 1-92, upper 25 percentile is from days 273-364)
 for (jj in 1:dim(Temp.array)[1])
 {
 	for (ii in 1:dim(Temp.array)[2])	
@@ -74,7 +58,6 @@ for (jj in 1:dim(Temp.array)[1])
 	}
 }
 
-### Create raster
 r.min<-raster(t(MIN),xmn=min(lon), xmx=max(lon), ymn=min(lat), ymx=max(lat))
 r.min <- flip(r.min, direction='y')
 r.min<-rotate(r.min) #Change lat to go go from -180 to 180, not 0 to 360
@@ -95,14 +78,10 @@ r.max25<-raster(t(MAX25),xmn=min(lon), xmx=max(lon), ymn=min(lat), ymx=max(lat))
 r.max25 <- flip(r.max25, direction='y')
 r.max25<-rotate(r.max25) #Change lat to go go from -180 to 180, not 0 to 360
 
-#Load shapefile of bathymetry/sea ice availibility
 suit<-readOGR("Bathy&SeaIce-prefered")
 
-#Dissolve polygons together, to form one polygon of possible habitats
 new<-suit
 
-#Reduce size of temperature raster cells, to improve coverage after masking
-#Factor by which to increase the number of cells in the raster (x and y dimensions)
 ff<-c(20,20)
 r.minD<-disaggregate(r.min,fact=ff)
 r.maxD<-disaggregate(r.max,fact=ff)
@@ -110,8 +89,6 @@ r.medD<-disaggregate(r.med,fact=ff)
 r.min25D<-disaggregate(r.min25,fact=ff)
 r.max25D<-disaggregate(r.max25,fact=ff)
 
-#Clip temperature rasters based on Bathy and Sea Ice extent
-#Mask min water temp, with bathymetry and sea ice extent
 temp.min<-mask(r.minD,new)
 temp.min<-crop(temp.min,extent(new))
 
@@ -127,57 +104,32 @@ temp.min25<-crop(temp.min25,extent(new))
 temp.max25<-mask(r.max25D,new) 
 temp.max25<-crop(temp.max25,extent(new))
 
-########################################################################################################################
-
-#Make the warmer world
-
-#Load bathymetry (nc file)
 Bathy<-nc_open("GEBCO_2014_2D_-179.7777_45.2207_-120.8539_76.3978.nc")
 
-#Find lat and lon of cells
 lon<-ncvar_get(Bathy,"lon")
 lat<-ncvar_get(Bathy,"lat")
 
-#Get depth/elevation data
 Depths<-ncvar_get(Bathy,"elevation")
-#Transpose Depth matrix so map will be right way up
+
 Depths <- t(Depths)
-#Create raster
+
 D<-raster(Depths,xmn=min(lon), xmx=max(lon), ymn=min(lat), ymx=max(lat))
-#Flip raster so map will be right way up
+
 D<-flip(D,direction='y')
-#Remove cells for depths where stickelback cannot persist
-#Remove all cells above sea level (i.e. on sea remains)
-D[D>0]<-NA 
-#Remove cell greater than 200m depth
-D[D<=-200]<-NA 
-#Set values in raster to all the same value
-D[D<=0 & D>-200]<-1 
 
-#Set Northern extent to lat of Wales, Alaska (65.6 N)
-#Set cells above the Northern extent to 0
-D[1:1253,]<-NA 
-#Plot to confirm this worked
-plot(D)
+D[D>0]<-NA #Remove all cells above sea level (i.e. on sea remains)
+D[D<=-200]<-NA #Remove cell greater than 200m depth
+D[D<=0 & D>-200]<-1 #Set values in raster to all the same value
 
-#For saving, commented out to avoid accidental overwrites
-#writeRaster(D,"path/Processed Files/BathyWarm.asc",format="ascii")
-#This file is converted into a polygon in arcgis. 
+D[1:1253,]<-NA #Set cells above the Northern extent to 0
 
-#Read the polygon in from ArcGis
 bathywarm<-readOGR("Warmer Bathy")
 
-#Mask temperature rasters with bathymetry extent for warmer world
 temp.min25W<-mask(r.max25D,bathywarm) 
 temp.min25W<-crop(temp.min25W,extent(bathywarm))
 
 temp.max25W<-mask(r.max25D,bathywarm) 
 temp.max25W<-crop(temp.max25W,extent(bathywarm))
-
-
-#Warm the waters, based on location
-
-#Winter (based on temp.min25)-need to set up with lat/lon
 
 exwin1<-c(extent(temp.min25W)[1],extent(temp.min25W)[2],62.22,extent(temp.min25W)[4]) #extent of section 1 warming (Northern)
 exwin2<-c(extent(temp.min25W)[1],extent(temp.min25W)[2],60.33,62.22) #extent of section 2 warming
@@ -198,28 +150,18 @@ CellsWin7<-cellsFromExtent(temp.max25W,exwin3)
 CellsWin8<-cellsFromExtent(temp.max25W,exwin4) 
 
 #Warm the min temps
-#Create new raster for warmed
-temp.min25WARMED<-temp.min25W
-#Warm it by relevant amounts for RCP 4.5, for the diff. extents
-temp.min25WARMED[CellsWin1]<-temp.min25W[CellsWin1]+2 
+temp.min25WARMED<-temp.min25W #Create new raster for warmed
+temp.min25WARMED[CellsWin1]<-temp.min25W[CellsWin1]+2 #Warm it by relevant amounts for RCP 4.5, for the diff. extents
 temp.min25WARMED[CellsWin2]<-temp.min25W[CellsWin2]+2.4 
 temp.min25WARMED[CellsWin3]<-temp.min25W[CellsWin3]+1.8 
 temp.min25WARMED[CellsWin4]<-temp.min25W[CellsWin4]+1.6 
 
 #Warm the max temps
-#Create new raster
-temp.max25WARMED<-temp.max25W 
-#Warm it by relevant amounts for RCP 4.5, for the diff. extents
-temp.max25WARMED[CellsWin5]<-temp.max25W[CellsWin5]+2 
+temp.max25WARMED<-temp.max25W #Create new raster
+temp.max25WARMED[CellsWin5]<-temp.max25W[CellsWin5]+2 #Warm it by relevant amounts for RCP 4.5, for the diff. extents
 temp.max25WARMED[CellsWin6]<-temp.max25W[CellsWin6]+2.4 
 temp.max25WARMED[CellsWin7]<-temp.max25W[CellsWin7]+1.8 
 temp.max25WARMED[CellsWin8]<-temp.max25W[CellsWin8]+1.6 
-
-########################################################################################################################
-#Determine presence/absence based on temperature tolereance, erratic behaviour, preference
-#Values from stickleback parameter summary file
-
-#Create, tolerance, errat, pref
 
 tol<-errat<-pref<-matrix(NA,nrow=dim(temp.max)[1],ncol=dim(temp.max)[2])
 m<-1
@@ -274,11 +216,7 @@ for (i in 1:dim(tol)[1])
 tolW<-erratW<-matrix(NA,nrow=dim(temp.max25WARMED)[1],ncol=dim(temp.max25WARMED)[2])
 m<-1
 
-########################################################################################################################
-
-#For the warmed world
-
-#Create, tolerance, errat, pref
+#Create tolerance, errat data
 for (i in 1:dim(temp.min25WARMED)[1])
 	{
 		n<-1
@@ -347,10 +285,10 @@ extent(TOL)<-extent(ERRAT)<-extent(PREF)<-extent(COMBOTE)<-extent(temp.min)
 extent(TOLW)<-extent(ERRATW)<-extent(COMBOTEW)<-extent(temp.min25WARMED)
 
 #Save rasters (use ",overwrite=TRUE" to overwrite files, not in code to avoid accidents)
-writeRaster(TOL,"Processed_files/TOL_Jan13_rcp4_tolerrat.asc",format="ascii")
-writeRaster(ERRAT,"Processed_files/ERRAT_Jan13_rcp4_tolerrat.asc",format="ascii")
-writeRaster(PREF,"Processed_files/PREF_Jan13_rcp4_tolerrat.asc",format="ascii")
-writeRaster(COMBOTE,"Processed_files/COMBOTE_Jan13_rcp4_tolerrat.asc",format="ascii")
-writeRaster(TOLW,"Processed_files/TOLW_Jan13_rcp4_tolerrat.asc",format="ascii")
-writeRaster(ERRATW,"Processed_files/ERRATW_Jan13_rcp4_tolerrat.asc",format="ascii")
-writeRaster(COMBOTEW,"Processed_files/COMBO_TOL_E_W_Jan13_rcp4_tolerrat.asc",format="ascii")
+writeRaster(TOL,"Processed_files/TOL_Jan13_rcp4_ctmin.asc",format="ascii")
+writeRaster(ERRAT,"Processed_files/ERRAT_Jan13_rcp4_ctmin.asc",format="ascii")
+writeRaster(PREF,"Processed_files/PREF_Jan13_rcp4_ctmin.asc",format="ascii")
+writeRaster(COMBOTE,"Processed_files/COMBOTE_Jan13_rcp4_ctmin.asc",format="ascii")
+writeRaster(TOLW,"Processed_files/TOLW_Jan13_rcp4_ctmin.asc",format="ascii")
+writeRaster(ERRATW,"Processed_files/ERRATW_Jan13_rcp4_ctmin.asc",format="ascii")
+writeRaster(COMBOTEW,"Processed_files/COMBO_TOL_E_W_Jan13_rcp4_ctmin.asc",format="ascii")
