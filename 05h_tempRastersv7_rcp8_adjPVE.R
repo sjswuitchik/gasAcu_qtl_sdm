@@ -1,7 +1,4 @@
-# SM 2019
-#Code for reading in data from netcdf files, and creating rasters of stickleback tolerance/erratic behaviour/tolerance zones
-
-library (ncdf4)
+library(ncdf4)
 library(raster)
 library(rgeos)
 library(sp)
