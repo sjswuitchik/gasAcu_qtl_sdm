@@ -1,6 +1,4 @@
-setwd("/n/holylfs/LABS/informatics/swuitchik/gasAcu_dist")
-
-library (ncdf4)
+library(ncdf4)
 library(raster)
 library(rgeos)
 library(sp)
