@@ -14,10 +14,11 @@ library(ncdf4)
 library(viridis)
 
 ###########################################################################################################################
+setwd("~/Desktop/UCalgary/Main\ Publication/Coding")
 
 #Load raster of combined tolerance and erratic behaviour
-COMBOTE<-raster("Processed_files/COMBOTE_Nov25_rcp4_noEvol.asc")
-COMBOTEWARM<-raster("Processed_files/COMBO_TOL_E_W_Nov25_rcp4_noEvol.asc")
+COMBOTE<-raster("Processed_files/COMBOTE_Nov3_rcp4_noEvol.asc")
+COMBOTEWARM<-raster("Processed_files/COMBO_TOL_E_W_Nov3_rcp4_noEvol.asc")
 
 #Load bathymetry to get coastlines (nc file)
 Bathy<-nc_open("GEBCO_2014_2D_-179.7777_45.2207_-120.8539_76.3978.nc")
