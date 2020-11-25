@@ -14,7 +14,6 @@ library(ncdf4)
 library(viridis)
 
 ###########################################################################################################################
-setwd("~/Desktop/UCalgary/Main\ Publication/Coding")
 
 #Load raster of combined tolerance and erratic behaviour
 COMBOTE<-raster("Processed_files/COMBOTE_Nov3_rcp4_noEvol.asc")
