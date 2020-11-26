@@ -26,7 +26,7 @@ evol.tol.lb <- tol.lb - 0.9
 evol.tol.ub <- tol.ub 
 evol.errat.lb <- errat.lb - 2.5
 evol.errat.ub <- errat.ub 
-evol.pref.lb <- pref.lb 
+evol.pref.lb <- pref.lb
 evol.pref.ub <- pref.ub
 
 MIN<-matrix(-1000,nrow=dim(Temp.array)[1],ncol=dim(Temp.array)[2])
@@ -283,10 +283,10 @@ extent(TOL)<-extent(ERRAT)<-extent(PREF)<-extent(COMBOTE)<-extent(temp.min)
 extent(TOLW)<-extent(ERRATW)<-extent(COMBOTEW)<-extent(temp.min25WARMED)
 
 #Save rasters (use ",overwrite=TRUE" to overwrite files, not in code to avoid accidents)
-writeRaster(TOL,"Processed_files/TOL_Nov3_rcp4_lowerEvol.asc",format="ascii")
-writeRaster(ERRAT,"Processed_files/ERRAT_Nov3_rcp4_lowerEvol.asc",format="ascii")
-writeRaster(PREF,"Processed_files/PREF_Nov3_rcp4_lowerEvol.asc",format="ascii")
-writeRaster(COMBOTE,"Processed_files/COMBOTE_Nov3_rcp4_lowerEvol.asc",format="ascii")
-writeRaster(TOLW,"Processed_files/TOLW_Nov3_rcp4_lowerEvol.asc",format="ascii")
-writeRaster(ERRATW,"Processed_files/ERRATW_Nov3_rcp4_lowerEvol.asc",format="ascii")
-writeRaster(COMBOTEW,"Processed_files/COMBO_TOL_E_W_Nov3_rcp4_lowerEvol.asc",format="ascii")
+writeRaster(TOL,"Processed_files/TOL_Nov26_rcp4_lowerEvol.asc",format="ascii")
+writeRaster(ERRAT,"Processed_files/ERRAT_Nov26_rcp4_lowerEvol.asc",format="ascii")
+writeRaster(PREF,"Processed_files/PREF_Nov26_rcp4_lowerEvol.asc",format="ascii")
+writeRaster(COMBOTE,"Processed_files/COMBOTE_Nov26_rcp4_lowerEvol.asc",format="ascii")
+writeRaster(TOLW,"Processed_files/TOLW_Nov26_rcp4_lowerEvol.asc",format="ascii")
+writeRaster(ERRATW,"Processed_files/ERRATW_Nov26_rcp4_lowerEvol.asc",format="ascii")
+writeRaster(COMBOTEW,"Processed_files/COMBO_TOL_E_W_Nov26_rcp4_lowerEvol.asc",format="ascii")
