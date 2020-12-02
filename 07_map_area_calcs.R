@@ -15,19 +15,19 @@ library(viridis)
 
 ###########################################################################################################################
 # Load rasters, add projection
-r4NC<-raster("COMBOTE_Jan13_rcp4_noevol.asc")
+r4NC<-raster("COMBOTE_Nov26_rcp4_noEvol.asc")
 proj4string(r4NC)<-CRS("+init=epsg:4326")
-r4NW<-raster("COMBO_TOL_E_W_Jan13_rcp4_noevol.asc")
+r4NW<-raster("COMBO_TOL_E_W_Nov26_rcp4_noEvol.asc")
 proj4string(r4NW)<-CRS("+init=epsg:4326")
-r4EW<-raster("COMBO_TOL_E_W_Jan13_rcp4_tolerrat.asc")
+r4EW<-raster("COMBO_TOL_E_W_Nov3_rcp4_evol.asc")
 proj4string(r4EW)<-CRS("+init=epsg:4326")
-r8NW<-raster("COMBO_TOL_E_W_Jan13_rcp8_noevol.asc")
+r8NW<-raster("COMBO_TOL_E_W_Nov3_rcp8_noEvol.asc")
 proj4string(r8NW)<-CRS("+init=epsg:4326")
-r8EW<-raster("COMBO_TOL_E_W_Jan13_rcp8_tolerrat.asc")
+r8EW<-raster("COMBO_TOL_E_W_Nov3_rcp8_evol.asc")
 proj4string(r8EW)<-CRS("+init=epsg:4326")
-r4EWadjPVE<-raster("COMBO_TOL_E_W_Jul16_rcp4_tolerrat_adjPVE.asc")
+r4EWadjPVE<-raster("COMBO_TOL_E_W_Nov30_rcp4_adjPVE_minOnly.asc")
 proj4string(r4EWadjPVE)<-CRS("+init=epsg:4326")
-r8EWadjPVE<-raster("COMBO_TOL_E_W_Jul16_rcp8_tolerrat_adjPVE.asc")
+r8EWadjPVE<-raster("COMBO_TOL_E_W_Nov30_rcp8_adjPVE_minOnly.asc")
 proj4string(r8EWadjPVE)<-CRS("+init=epsg:4326")
 
 # Find the raster values
