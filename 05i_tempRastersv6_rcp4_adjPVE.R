@@ -1,5 +1,3 @@
-setwd("/n/holylfs/LABS/informatics/swuitchik/gasAcu/gasAcu_dist/v6_rerun")
-
 library (ncdf4)
 library(raster)
 library(rgeos)
