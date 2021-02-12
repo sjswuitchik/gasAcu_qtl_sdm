@@ -29,6 +29,10 @@ r4EWadjPVE<-raster("COMBO_TOL_E_W_Nov30_rcp4_adjPVE_minOnly.asc")
 proj4string(r4EWadjPVE)<-CRS("+init=epsg:4326")
 r8EWadjPVE<-raster("COMBO_TOL_E_W_Nov30_rcp8_adjPVE_minOnly.asc")
 proj4string(r8EWadjPVE)<-CRS("+init=epsg:4326")
+r4EWadjPVEv6<-raster("COMBO_TOL_E_W_Feb9_rcp4_tolerrat_adj.asc")
+proj4string(r4EWadjPVEv6)<-CRS("+init=epsg:4326")
+r8EWadjPVEv6<-raster("COMBO_TOL_E_W_Feb9_rcp8_tolerrat_adj.asc")
+proj4string(r8EWadjPVEv6)<-CRS("+init=epsg:4326") 
 
 # Find the raster values
 unique(r4NC)
@@ -159,6 +163,27 @@ area(poly.r4EWadjPVE)/area(poly.r4NC)
 #### Comparison 10: RCP 8.5 current vs adj PVE evol warmer (r8EWadjPVE/r4NC) ####
 area(poly.r8EWadjPVE)/area(poly.r4NC)
 
+#### Comparison 11: RCP 4.5 current vs adj PVE evol warmer v6 (CTmin+CTmax evol) (r4EWadjPVEv6/r4NC) ####
+r4EWadjPVEv6[r4EWadjPVEv6!=3]<-NA
+pdf("r4EWadjPVEv6.pdf")
+plot(r4EWadjPVEv6)
+dev.off()
 
+r8EWadjPVEv6[r8EWadjPVEv6!=3]<-NA
+pdf("r8EWadjPVEv6.pdf")
+plot(r8EWadjPVEv6)
+dev.off()
 
+# Change projection to an equal area projection (useable for areas N of 45 lat)
+proj4string(r4EWadjPVEv6)<-CRS("+init=epsg:3572") 
+proj4string(r8EWadjPVEv6)<-CRS("+init=epsg:3572")
+
+# Convert to polygon
+poly.r4EWadjPVEv6<-rasterToPolygons(r4EWadjPVEv6,na.rm=TRUE,dissolve=TRUE)
+poly.r8EWadjPVEv6<-rasterToPolygons(r8EWadjPVEv6,na.rm=TRUE,dissolve=TRUE)
+
+area(poly.r4EWadjPVEv6)/area(poly.r4NC)
+
+#### Comparison 12: RCP 8.5 current vs adj PVE evol warmer v6 (CTmin+CTmax evol) (r8EWadjPVEv6/r4NC) ####
+area(poly.r8EWadjPVEv6)/area(poly.r4NC)
 
