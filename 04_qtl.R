@@ -1,864 +1,937 @@
-# example for one family #
-#### Hotel ####
+#### A5A12 - Klein 1 ####
+## May 2021 redo with phased genotypes from LepMap3
+library(qtl)
+library(viridis)
+library(scales)
+setwd("~/Desktop/may2021_qtlRedo/klein/matrices/k1")
+viridis <- viridis_pal(direction = 1, option = "D")
+pal <- viridisLite::viridis(4, option = "D")
+pdf('palette.pdf')
+show_col(pal)
+dev.off()
 #### chr 1 ####
-chr1 <- read.cross(file = "chr1.csv", format = "csv", na.strings = c("-1","NA"), genotypes = c("0","1","2"), alleles = c("A","B"), estimate.map = F)
+# load in data
+chr1 <- read.cross(file = "k1_chr1.csv", format = "csv", na.strings = c("-1","NA"), genotypes = c("AA","AB","BA", "BB"), alleles = c("A","B"), estimate.map = F)
+# jitter markers at same position
 chr1 <- jittermap(chr1)
+# drop null or duplicate markers
 chr1 <- drop.nullmarkers(chr1)
 chr1 <- drop.dupmarkers(chr1, verbose = T)
-dupmark <- findDupMarkers(chr1)
+# check total markers after pruning
 totmar(chr1)
-chr1 <- drop.markers(chr1, unlist(dupmark))
-totmar(chr1)
+# check for missing data
 geno.image(chr1, reorder = T)
+# fill in missing data (if any)
 chr1 <- fill.geno(chr1, method = c("argmax"), error.prob = 0.0001, map.function = "kosambi")
 geno.image(chr1, reorder = T)
+# calculate genotype probabilities
 chr1 <- calc.genoprob(chr1, step = 2, error.prob = 0.0001)
+# simulate genos
 chr1 <- sim.geno(chr1, n.draws = 25, step = 0, error.prob = 0.0001, map.function = "kosambi", stepwidth = "fixed")
+# summarize and write out map for linkage map viz
 summaryMap(chr1)
 map <- pullMap(chr1)
-write.csv(map, "map1_march2020.csv", row.names = F)
-chr1s1 <- scanone(chr1, method = "imp", pheno.col = c(2:7))
+write.csv(map, "chr1_map.csv", row.names = F)
+# scan for QTL
+chr1s1 <- scanone(chr1, method = "imp", pheno.col = c(2:5))
 summary <- summary(chr1s1)
 write.csv(summary, "chr1_summary.csv")
-perms <- scanone(chr1, pheno.col = c(2:7), n.perm = 10000, verbose = T, method = "imp")
+# run permutations
+perms <- scanone(chr1, pheno.col = c(2:5), n.perm = 1000, verbose = T, method = "imp")
 perms_summary <- summary(perms)
 write.csv(perms_summary, "chr1_perms.csv")
+# plot chrom scan and write out as PDF
 phenos <- phenames(chr1)
-viridis <- viridis_pal(direction = 1, option = "D")
-pal <- viridisLite::viridis(5, option = "D")
 pdf('chr1_scan.pdf')
-plot(chr1s1, main = "Chr1 - March 13", ylim = c(0,5), ylab = "LOD score")
+plot(chr1s1, main = "Chr1 - May 2021", ylim = c(0,5), ylab = "LOD score")
 for (i in 1:length(phenos)) plot(chr1s1, add = T, lodcolumn = i, col = pal[i])
 add.threshold(out = chr1s1, perms = perms, alpha = 0.05, col = pal[1], lty = 2, lodcolumn = 1)
 add.threshold(out = chr1s1, perms = perms, alpha = 0.05, col = pal[2], lty = 2, lodcolumn = 2)
 add.threshold(out = chr1s1, perms = perms, alpha = 0.05, col = pal[3], lty = 2, lodcolumn = 3)
 add.threshold(out = chr1s1, perms = perms, alpha = 0.05, col = pal[4], lty = 2, lodcolumn = 4)
-add.threshold(out = chr1s1, perms = perms, alpha = 0.05, col = pal[5], lty = 2, lodcolumn = 5)
 dev.off()
 
-mod <- pullSigQTL(chr1, pheno.col = c(2:7), s1.output = chr1s1, perm.output = perms, returnQTLModel = F, alpha = 0.05)
-cis1 <- calcCis(chr1, s1.output = chr1s1, perm.output = perms)
-
 #### chr 2 ####
-chr2 <- read.cross(file = "chr2.csv", format = "csv", na.strings = c("-1","NA"), genotypes = c("0","1","2"), alleles = c("A","B"), estimate.map = F)
+# load in data
+chr2 <- read.cross(file = "k1_chr2.csv", format = "csv", na.strings = c("-1","NA"), genotypes = c("AA","AB","BA", "BB"), alleles = c("A","B"), estimate.map = F)
+# jitter markers at same position
 chr2 <- jittermap(chr2)
+# drop null or duplicate markers
 chr2 <- drop.nullmarkers(chr2)
 chr2 <- drop.dupmarkers(chr2, verbose = T)
-dupmark <- findDupMarkers(chr2)
+# check total markers after pruning
 totmar(chr2)
-chr2 <- drop.markers(chr2, unlist(dupmark))
-totmar(chr2)
+# check for missing data
 geno.image(chr2, reorder = T)
+# fill in missing data (if any)
 chr2 <- fill.geno(chr2, method = c("argmax"), error.prob = 0.0001, map.function = "kosambi")
 geno.image(chr2, reorder = T)
+# calculate genotype probabilities
 chr2 <- calc.genoprob(chr2, step = 2, error.prob = 0.0001)
+# simulate genos
 chr2 <- sim.geno(chr2, n.draws = 25, step = 0, error.prob = 0.0001, map.function = "kosambi", stepwidth = "fixed")
+# summarize and write out map for linkage map viz
 summaryMap(chr2)
 map <- pullMap(chr2)
-write.csv(map, "map2_march2020.csv", row.names = F)
-chr2s1 <- scanone(chr2, method = "imp", pheno.col = c(2:7))
+write.csv(map, "chr2_map.csv", row.names = F)
+# scan for QTL
+chr2s1 <- scanone(chr2, method = "imp", pheno.col = c(2:5))
 summary <- summary(chr2s1)
 write.csv(summary, "chr2_summary.csv")
-perms <- scanone(chr2, pheno.col = c(2:7), n.perm = 10000, verbose = T, method = "imp")
+# run permutations
+perms <- scanone(chr2, pheno.col = c(2:5), n.perm = 1000, verbose = T, method = "imp")
 perms_summary <- summary(perms)
 write.csv(perms_summary, "chr2_perms.csv")
+# plot chrom scan and write out as PDF
 phenos <- phenames(chr2)
-viridis <- viridis_pal(direction = 1, option = "D")
-pal <- viridisLite::viridis(5, option = "D")
 pdf('chr2_scan.pdf')
-plot(chr2s1, main = "chr2 - March 13", ylim = c(0,5), ylab = "LOD score")
+plot(chr2s1, main = "chr2 - May 2021", ylim = c(0,5), ylab = "LOD score")
 for (i in 1:length(phenos)) plot(chr2s1, add = T, lodcolumn = i, col = pal[i])
 add.threshold(out = chr2s1, perms = perms, alpha = 0.05, col = pal[1], lty = 2, lodcolumn = 1)
 add.threshold(out = chr2s1, perms = perms, alpha = 0.05, col = pal[2], lty = 2, lodcolumn = 2)
 add.threshold(out = chr2s1, perms = perms, alpha = 0.05, col = pal[3], lty = 2, lodcolumn = 3)
 add.threshold(out = chr2s1, perms = perms, alpha = 0.05, col = pal[4], lty = 2, lodcolumn = 4)
-add.threshold(out = chr2s1, perms = perms, alpha = 0.05, col = pal[5], lty = 2, lodcolumn = 5)
 dev.off()
 
-mod <- pullSigQTL(chr2, pheno.col = c(2:7), s1.output = chr2s1, perm.output = perms, returnQTLModel = F, alpha = 0.05)
-cis2 <- calcCis(chr2, s1.output = chr2s1, perm.output = perms)
-
-#### chr 3 ####
-chr3 <- read.cross(file = "chr3.csv", format = "csv", na.strings = c("-1","NA"), genotypes = c("0","1","2"), alleles = c("A","B"), estimate.map = F)
+#### chr3 - CTmin ####
+# load in data
+chr3 <- read.cross(file = "k1_chr3.csv", format = "csv", na.strings = c("-1","NA"), genotypes = c("AA","AB","BA", "BB"), alleles = c("A","B"), estimate.map = F)
+# jitter markers at same position
 chr3 <- jittermap(chr3)
+# drop null or duplicate markers
 chr3 <- drop.nullmarkers(chr3)
 chr3 <- drop.dupmarkers(chr3, verbose = T)
-dupmark <- findDupMarkers(chr3)
+# check total markers after pruning
 totmar(chr3)
-chr3 <- drop.markers(chr3, unlist(dupmark))
-totmar(chr3)
+# check for missing data
 geno.image(chr3, reorder = T)
+# fill in missing data (if any)
 chr3 <- fill.geno(chr3, method = c("argmax"), error.prob = 0.0001, map.function = "kosambi")
 geno.image(chr3, reorder = T)
+# calculate genotype probabilities
 chr3 <- calc.genoprob(chr3, step = 2, error.prob = 0.0001)
+# simulate genos
 chr3 <- sim.geno(chr3, n.draws = 25, step = 0, error.prob = 0.0001, map.function = "kosambi", stepwidth = "fixed")
+# summarize and write out map for linkage map viz
 summaryMap(chr3)
 map <- pullMap(chr3)
-write.csv(map, "map3_march2020.csv", row.names = F)
-chr3s1 <- scanone(chr3, method = "imp", pheno.col = c(2:7))
+write.csv(map, "chr3_map.csv", row.names = F)
+# scan for QTL
+chr3s1 <- scanone(chr3, method = "imp", pheno.col = c(2:5))
 summary <- summary(chr3s1)
 write.csv(summary, "chr3_summary.csv")
-perms <- scanone(chr3, pheno.col = c(2:7), n.perm = 10000, verbose = T, method = "imp")
+# run permutations
+perms <- scanone(chr3, pheno.col = c(2:5), n.perm = 5000, verbose = T, method = "imp")
 perms_summary <- summary(perms)
 write.csv(perms_summary, "chr3_perms.csv")
+# plot chrom scan and write out as PDF
 phenos <- phenames(chr3)
-viridis <- viridis_pal(direction = 1, option = "D")
-pal <- viridisLite::viridis(5, option = "D")
 pdf('chr3_scan.pdf')
-plot(chr3s1, main = "chr3 - March 13", ylim = c(0,5), ylab = "LOD score")
+plot(chr3s1, main = "chr3 - May 2021 5k", ylim = c(0,5), ylab = "LOD score")
 for (i in 1:length(phenos)) plot(chr3s1, add = T, lodcolumn = i, col = pal[i])
 add.threshold(out = chr3s1, perms = perms, alpha = 0.05, col = pal[1], lty = 2, lodcolumn = 1)
 add.threshold(out = chr3s1, perms = perms, alpha = 0.05, col = pal[2], lty = 2, lodcolumn = 2)
 add.threshold(out = chr3s1, perms = perms, alpha = 0.05, col = pal[3], lty = 2, lodcolumn = 3)
 add.threshold(out = chr3s1, perms = perms, alpha = 0.05, col = pal[4], lty = 2, lodcolumn = 4)
-add.threshold(out = chr3s1, perms = perms, alpha = 0.05, col = pal[5], lty = 2, lodcolumn = 5)
 dev.off()
 
-mod <- pullSigQTL(chr3, pheno.col = c(2:7), s1.output = chr3s1, perm.output = perms, returnQTLModel = F, alpha = 0.05)
-cis3 <- calcCis(chr3, s1.output = chr3s1, perm.output = perms)
+# look at PxG plots for peaks
+summary(chr3s1, threshold = 2.554995678, format = c("onepheno"), lodcolumn = 1, perms = perms, pvales = T)
+pdf('chr3_ctmin_pxg.pdf')
+plotPXG(chr3, marker = "628", pheno.col = 2, jitter = 1)
+dev.off()
+pdf('chr3_ctmin_eff.pdf')
+effectplot(chr3, pheno.col = 2, mname1 = 628)
+dev.off()
+pdf("chr3_ctmin_effScan.pdf")
+effectscan(chr3, pheno.col = 2, chr = 3, get.se = T, draw = T)
+dev.off()
+lodint(chr3s1, chr = 3, lodcolumn = 1, expandtomarkers = F)
+q1 <- makeqtl(chr3, chr = 3, pos = 11.572037, qtl.name = "CTmin", what = "prob")
+fitq1 <- fitqtl(chr3, pheno.col = 2, qtl = q1, method = "hk", model = "normal", get.ests = T)
+summary(fitq1) # PVE = 28.6%, a = -0.5379 +/- 0.1933, d =  0.6212 +/- 0.2891, p = 0.003852923
 
-#### chr 4 ####
-chr4 <- read.cross(file = "chr4.csv", format = "csv", na.strings = c("-1","NA"), genotypes = c("0","1","2"), alleles = c("A","B"), estimate.map = F)
+#### chr4 ####
+# load in data
+chr4 <- read.cross(file = "k1_chr4.csv", format = "csv", na.strings = c("-1","NA"), genotypes = c("AA","AB","BA", "BB"), alleles = c("A","B"), estimate.map = F)
+# jitter markers at same position
 chr4 <- jittermap(chr4)
+# drop null or duplicate markers
 chr4 <- drop.nullmarkers(chr4)
 chr4 <- drop.dupmarkers(chr4, verbose = T)
-dupmark <- findDupMarkers(chr4)
+# check total markers after pruning
 totmar(chr4)
-chr4 <- drop.markers(chr4, unlist(dupmark))
-totmar(chr4)
+# check for missing data
 geno.image(chr4, reorder = T)
+# fill in missing data (if any)
 chr4 <- fill.geno(chr4, method = c("argmax"), error.prob = 0.0001, map.function = "kosambi")
 geno.image(chr4, reorder = T)
+# calculate genotype probabilities
 chr4 <- calc.genoprob(chr4, step = 2, error.prob = 0.0001)
+# simulate genos
 chr4 <- sim.geno(chr4, n.draws = 25, step = 0, error.prob = 0.0001, map.function = "kosambi", stepwidth = "fixed")
+# summarize and write out map for linkage map viz
 summaryMap(chr4)
 map <- pullMap(chr4)
-write.csv(map, "~/Desktop/UCalgary/hmap4_jan2021_100k.csv", row.names = F)
-chr4s1 <- scanone(chr4, method = "imp", pheno.col = c(2:3))
+write.csv(map, "chr4_map.csv", row.names = F)
+# scan for QTL
+chr4s1 <- scanone(chr4, method = "imp", pheno.col = c(2:5))
 summary <- summary(chr4s1)
-write.csv(summary, "~/Desktop/UCalgary/hchr4_summary_jan2021_100k.csv")
-perms <- scanone(chr4, pheno.col = c(2:3), n.perm = 100000, verbose = T, method = "imp")
+write.csv(summary, "chr4_summary.csv")
+# run permutations
+perms <- scanone(chr4, pheno.col = c(2:5), n.perm = 1000, verbose = T, method = "imp")
 perms_summary <- summary(perms)
-write.csv(perms_summary, "~/Desktop/UCalgary/hchr4_perms_jan2021_100k.csv")
+write.csv(perms_summary, "chr4_perms.csv")
+# plot chrom scan and write out as PDF
 phenos <- phenames(chr4)
-viridis <- viridis_pal(direction = 1, option = "D")
-pal <- viridisLite::viridis(2, option = "D")
-pdf('~/Desktop/UCalgary/hchr4_scan_jan2021_100k.pdf')
-plot(chr4s1, main = "chr4 - Jan 27 2021", ylim = c(0,5), ylab = "LOD score")
+pdf('chr4_scan.pdf')
+plot(chr4s1, main = "chr4 - May 2021", ylim = c(0,5), ylab = "LOD score")
 for (i in 1:length(phenos)) plot(chr4s1, add = T, lodcolumn = i, col = pal[i])
 add.threshold(out = chr4s1, perms = perms, alpha = 0.05, col = pal[1], lty = 2, lodcolumn = 1)
 add.threshold(out = chr4s1, perms = perms, alpha = 0.05, col = pal[2], lty = 2, lodcolumn = 2)
+add.threshold(out = chr4s1, perms = perms, alpha = 0.05, col = pal[3], lty = 2, lodcolumn = 3)
+add.threshold(out = chr4s1, perms = perms, alpha = 0.05, col = pal[4], lty = 2, lodcolumn = 4)
 dev.off()
 
-mod <- pullSigQTL(chr4, pheno.col = c(2:3), s1.output = chr4s1, perm.output = perms, returnQTLModel = F, alpha = 0.05)
-cis4 <- calcCis(chr4, s1.output = chr4s1, perm.output = perms)
-write.csv(cis4, "~/Desktop/UCalgary/hchr4_qtl_jan2021_100k.csv")
-
-lodint(chr4s1, '4a', 1.5)
-bayesint(chr4s1, '4a', 0.95, expandtomarkers = T)
-bayesint(chr4s1, '4b', 0.95, expandtomarkers = T)
-minboot <- scanoneboot(chr4, chr = '4a', pheno.col = 2, n.boot = 1000)
-summary(minboot)
-maxboot <- scanoneboot(chr4, chr = '4b', pheno.col = 3, n.boot = 1000)
-summary(maxboot)
-hist(minboot)
-hist(maxboot)
-
-
-pdf("~/Desktop/UCalgary/hpxg_jan2021_100k_ctmin.pdf")
-plotPXG(chr4, marker = "1031", pheno.col = c(2), jitter = 0.2, infer = T, pch = 1)
-dev.off()
-
-#pdf("~/Desktop/UCalgary/hpxg_july2020range.pdf")
-#plotPXG(chr4, marker = "1735", pheno.col = c(4), jitter = 0.2, infer = T, pch = 1)
-#dev.off()
-
-pdf("~/Desktop/UCalgary/hpxg_jan2021_100k_ctmax.pdf")
-plotPXG(chr4, marker = "1535", pheno.col = c(3), jitter = 0.2, infer = T, pch = 1)
-dev.off()
-
-
-mod <- makeqtl(chr4, chr = c("4a"), pos = 38.672932, what = "prob")
-nform <- "y ~ Q1"
-mod <- refineqtl(chr4, mod, pheno.col = 2, qtl = mod, formula = nform, method = "hk")
-stats <- qtlStats(chr4, pheno.col = 2, calcConfint = T, estEffects = T, mod = mod, model = "normal", form = nform)
-write.csv(stats, "~/Desktop/UCalgary/hstats_jan2021_100k.csv")
-
-mod <- makeqtl(chr4, chr = c("4b"), pos = 0, what = "prob")
-nform <- "y ~ Q1"
-mod <- refineqtl(chr4, mod, pheno.col = 3, qtl = mod, formula = nform, method = "hk")
-stats <- qtlStats(chr4, pheno.col = 4, calcConfint = T, estEffects = T, mod = mod, model = "normal", form = nform)
-write.csv(stats, "~/Desktop/UCalgary/hstats_july2020ctmax100k.csv")
-
-fitqtl(chr4, pheno.col = 3, qtl = mod, formula = nform, method = "hk", 
-       model = "normal", get.ests = T, run.checks = T)
-# 63.9 PVE for CTmax
-
-fitqtl(chr4, pheno.col = 2, qtl = mod, formula = nform, method = "hk", 
-       model = "normal", get.ests = T, run.checks = T)
-# 53.7 PVE for CTmin
-
-#with(cis4, segmentsOnMap(chr4, phe = pheno, chr = chr, l = lowposition, h = highposition, legendCex = 0.5, tick.width = 0.1, palette = viridis_pal(option = "D"), lwd = "byLod", legendPosition = "bottomright"))
-
-#### chr 5 #### 
-chr5 <- read.cross(file = "chr5.csv", format = "csv", na.strings = c("-1","NA"), genotypes = c("0","1","2"), alleles = c("A","B"), estimate.map = F)
+#### chr5 ####
+# load in data
+chr5 <- read.cross(file = "k1_chr5.csv", format = "csv", na.strings = c("-1","NA"), genotypes = c("AA","AB","BA", "BB"), alleles = c("A","B"), estimate.map = F)
+# jitter markers at same position
 chr5 <- jittermap(chr5)
+# drop null or duplicate markers
 chr5 <- drop.nullmarkers(chr5)
 chr5 <- drop.dupmarkers(chr5, verbose = T)
-dupmark <- findDupMarkers(chr5)
+# check total markers after pruning
 totmar(chr5)
-chr5 <- drop.markers(chr5, unlist(dupmark))
-totmar(chr5)
+# check for missing data
 geno.image(chr5, reorder = T)
+# fill in missing data (if any)
 chr5 <- fill.geno(chr5, method = c("argmax"), error.prob = 0.0001, map.function = "kosambi")
 geno.image(chr5, reorder = T)
+# calculate genotype probabilities
 chr5 <- calc.genoprob(chr5, step = 2, error.prob = 0.0001)
+# simulate genos
 chr5 <- sim.geno(chr5, n.draws = 25, step = 0, error.prob = 0.0001, map.function = "kosambi", stepwidth = "fixed")
+# summarize and write out map for linkage map viz
 summaryMap(chr5)
 map <- pullMap(chr5)
-write.csv(map, "map5_march2020.csv", row.names = F)
-chr5s1 <- scanone(chr5, method = "imp", pheno.col = c(2:7))
+write.csv(map, "chr5_map.csv", row.names = F)
+# scan for QTL
+chr5s1 <- scanone(chr5, method = "imp", pheno.col = c(2:5))
 summary <- summary(chr5s1)
 write.csv(summary, "chr5_summary.csv")
-perms <- scanone(chr5, pheno.col = c(2:7), n.perm = 10000, verbose = T, method = "imp")
+# run permutations
+perms <- scanone(chr5, pheno.col = c(2:5), n.perm = 1000, verbose = T, method = "imp")
 perms_summary <- summary(perms)
 write.csv(perms_summary, "chr5_perms.csv")
+# plot chrom scan and write out as PDF
 phenos <- phenames(chr5)
-viridis <- viridis_pal(direction = 1, option = "D")
-pal <- viridisLite::viridis(5, option = "D")
 pdf('chr5_scan.pdf')
-plot(chr5s1, main = "chr5 - March 13", ylim = c(0,5), ylab = "LOD score")
+plot(chr5s1, main = "chr5 - May 2021", ylim = c(0,5), ylab = "LOD score")
 for (i in 1:length(phenos)) plot(chr5s1, add = T, lodcolumn = i, col = pal[i])
-add.threshold(out = chr5s1, perms = perms, alpha = 0.05, col = pal[1], lty = 2, lwd = 2, lodcolumn = 1)
-add.threshold(out = chr5s1, perms = perms, alpha = 0.05, col = pal[2], lty = 2, lwd = 2,  lodcolumn = 2)
-add.threshold(out = chr5s1, perms = perms, alpha = 0.05, col = pal[3], lty = 2, lwd = 2,  lodcolumn = 3)
-add.threshold(out = chr5s1, perms = perms, alpha = 0.05, col = pal[4], lty = 2, lwd = 2,  lodcolumn = 4)
-add.threshold(out = chr5s1, perms = perms, alpha = 0.05, col = pal[5], lty = 2, lwd = 2,  lodcolumn = 5)
+add.threshold(out = chr5s1, perms = perms, alpha = 0.05, col = pal[1], lty = 2, lodcolumn = 1)
+add.threshold(out = chr5s1, perms = perms, alpha = 0.05, col = pal[2], lty = 2, lodcolumn = 2)
+add.threshold(out = chr5s1, perms = perms, alpha = 0.05, col = pal[3], lty = 2, lodcolumn = 3)
+add.threshold(out = chr5s1, perms = perms, alpha = 0.05, col = pal[4], lty = 2, lodcolumn = 4)
 dev.off()
 
-mod <- pullSigQTL(chr5, pheno.col = c(2:7), s1.output = chr5s1, perm.output = perms, returnQTLModel = F, alpha = 0.05)
-cis5 <- calcCis(chr5, s1.output = chr5s1, perm.output = perms)
-
-#### chr 6 #### 
-chr6 <- read.cross(file = "chr6.csv", format = "csv", na.strings = c("-1","NA"), genotypes = c("0","1","2"), alleles = c("A","B"), estimate.map = F)
+#### chr6 ####
+# load in data
+chr6 <- read.cross(file = "k1_chr6.csv", format = "csv", na.strings = c("-1","NA"), genotypes = c("AA","AB","BA", "BB"), alleles = c("A","B"), estimate.map = F)
+# jitter markers at same position
 chr6 <- jittermap(chr6)
+# drop null or duplicate markers
 chr6 <- drop.nullmarkers(chr6)
 chr6 <- drop.dupmarkers(chr6, verbose = T)
-dupmark <- findDupMarkers(chr6)
+# check total markers after pruning
 totmar(chr6)
-chr6 <- drop.markers(chr6, unlist(dupmark))
-totmar(chr6)
+# check for missing data
 geno.image(chr6, reorder = T)
+# fill in missing data (if any)
 chr6 <- fill.geno(chr6, method = c("argmax"), error.prob = 0.0001, map.function = "kosambi")
 geno.image(chr6, reorder = T)
+# calculate genotype probabilities
 chr6 <- calc.genoprob(chr6, step = 2, error.prob = 0.0001)
+# simulate genos
 chr6 <- sim.geno(chr6, n.draws = 25, step = 0, error.prob = 0.0001, map.function = "kosambi", stepwidth = "fixed")
+# summarize and write out map for linkage map viz
 summaryMap(chr6)
 map <- pullMap(chr6)
-write.csv(map, "map6_march2020.csv", row.names = F)
-chr6s1 <- scanone(chr6, method = "imp", pheno.col = c(2:7))
+write.csv(map, "chr6_map.csv", row.names = F)
+# scan for QTL
+chr6s1 <- scanone(chr6, method = "imp", pheno.col = c(2:5))
 summary <- summary(chr6s1)
 write.csv(summary, "chr6_summary.csv")
-perms <- scanone(chr6, pheno.col = c(2:7), n.perm = 10000, verbose = T, method = "imp")
+# run permutations
+perms <- scanone(chr6, pheno.col = c(2:5), n.perm = 1000, verbose = T, method = "imp")
 perms_summary <- summary(perms)
 write.csv(perms_summary, "chr6_perms.csv")
+# plot chrom scan and write out as PDF
 phenos <- phenames(chr6)
-viridis <- viridis_pal(direction = 1, option = "D")
-pal <- viridisLite::viridis(5, option = "D")
 pdf('chr6_scan.pdf')
-plot(chr6s1, main = "chr6 - March 13", ylim = c(0,5), ylab = "LOD score")
+plot(chr6s1, main = "chr6 - May 2021", ylim = c(0,5), ylab = "LOD score")
 for (i in 1:length(phenos)) plot(chr6s1, add = T, lodcolumn = i, col = pal[i])
 add.threshold(out = chr6s1, perms = perms, alpha = 0.05, col = pal[1], lty = 2, lodcolumn = 1)
 add.threshold(out = chr6s1, perms = perms, alpha = 0.05, col = pal[2], lty = 2, lodcolumn = 2)
 add.threshold(out = chr6s1, perms = perms, alpha = 0.05, col = pal[3], lty = 2, lodcolumn = 3)
 add.threshold(out = chr6s1, perms = perms, alpha = 0.05, col = pal[4], lty = 2, lodcolumn = 4)
-add.threshold(out = chr6s1, perms = perms, alpha = 0.05, col = pal[5], lty = 2, lodcolumn = 5)
 dev.off()
 
-mod <- pullSigQTL(chr6, pheno.col = c(2:7), s1.output = chr6s1, perm.output = perms, returnQTLModel = F, alpha = 0.05)
-cis6 <- calcCis(chr6, s1.output = chr6s1, perm.output = perms)
-
-#### chr 7 ####
-chr7 <- read.cross(file = "chr7.csv", format = "csv", na.strings = c("-1","NA"), genotypes = c("0","1","2"), alleles = c("A","B"), estimate.map = F)
+#### chr7 ####
+# load in data
+chr7 <- read.cross(file = "k1_chr7.csv", format = "csv", na.strings = c("-1","NA"), genotypes = c("AA","AB","BA", "BB"), alleles = c("A","B"), estimate.map = F)
+# jitter markers at same position
 chr7 <- jittermap(chr7)
+# drop null or duplicate markers
 chr7 <- drop.nullmarkers(chr7)
 chr7 <- drop.dupmarkers(chr7, verbose = T)
-dupmark <- findDupMarkers(chr7)
+# check total markers after pruning
 totmar(chr7)
-chr7 <- drop.markers(chr7, unlist(dupmark))
-totmar(chr7)
+# check for missing data
 geno.image(chr7, reorder = T)
+# fill in missing data (if any)
 chr7 <- fill.geno(chr7, method = c("argmax"), error.prob = 0.0001, map.function = "kosambi")
 geno.image(chr7, reorder = T)
+# calculate genotype probabilities
 chr7 <- calc.genoprob(chr7, step = 2, error.prob = 0.0001)
+# simulate genos
 chr7 <- sim.geno(chr7, n.draws = 25, step = 0, error.prob = 0.0001, map.function = "kosambi", stepwidth = "fixed")
+# summarize and write out map for linkage map viz
 summaryMap(chr7)
 map <- pullMap(chr7)
-write.csv(map, "map7_march2020.csv", row.names = F)
-chr7s1 <- scanone(chr7, method = "imp", pheno.col = c(2:7))
+write.csv(map, "chr7_map.csv", row.names = F)
+# scan for QTL
+chr7s1 <- scanone(chr7, method = "imp", pheno.col = c(2:5))
 summary <- summary(chr7s1)
 write.csv(summary, "chr7_summary.csv")
-perms <- scanone(chr7, pheno.col = c(2:7), n.perm = 10000, verbose = T, method = "imp")
+# run permutations
+perms <- scanone(chr7, pheno.col = c(2:5), n.perm = 1000, verbose = T, method = "imp")
 perms_summary <- summary(perms)
 write.csv(perms_summary, "chr7_perms.csv")
+# plot chrom scan and write out as PDF
 phenos <- phenames(chr7)
-viridis <- viridis_pal(direction = 1, option = "D")
-pal <- viridisLite::viridis(5, option = "D")
 pdf('chr7_scan.pdf')
-plot(chr7s1, main = "chr7 - March 13", ylim = c(0,5), ylab = "LOD score")
+plot(chr7s1, main = "chr7 - May 2021", ylim = c(0,5), ylab = "LOD score")
 for (i in 1:length(phenos)) plot(chr7s1, add = T, lodcolumn = i, col = pal[i])
 add.threshold(out = chr7s1, perms = perms, alpha = 0.05, col = pal[1], lty = 2, lodcolumn = 1)
 add.threshold(out = chr7s1, perms = perms, alpha = 0.05, col = pal[2], lty = 2, lodcolumn = 2)
 add.threshold(out = chr7s1, perms = perms, alpha = 0.05, col = pal[3], lty = 2, lodcolumn = 3)
 add.threshold(out = chr7s1, perms = perms, alpha = 0.05, col = pal[4], lty = 2, lodcolumn = 4)
-add.threshold(out = chr7s1, perms = perms, alpha = 0.05, col = pal[5], lty = 2, lodcolumn = 5)
 dev.off()
 
-mod <- pullSigQTL(chr7, pheno.col = c(2:7), s1.output = chr7s1, perm.output = perms, returnQTLModel = F, alpha = 0.05)
-cis7 <- calcCis(chr7, s1.output = chr7s1, perm.output = perms)
-
-#### chr 8 ####
-chr8 <- read.cross(file = "chr8.csv", format = "csv", na.strings = c("-1","NA"), genotypes = c("0","1","2"), alleles = c("A","B"), estimate.map = F)
+#### chr8 ####
+# load in data
+chr8 <- read.cross(file = "k1_chr8.csv", format = "csv", na.strings = c("-1","NA"), genotypes = c("AA","AB","BA", "BB"), alleles = c("A","B"), estimate.map = F)
+# jitter markers at same position
 chr8 <- jittermap(chr8)
+# drop null or duplicate markers
 chr8 <- drop.nullmarkers(chr8)
 chr8 <- drop.dupmarkers(chr8, verbose = T)
-dupmark <- findDupMarkers(chr8)
+# check total markers after pruning
 totmar(chr8)
-chr8 <- drop.markers(chr8, unlist(dupmark))
-totmar(chr8)
+# check for missing data
 geno.image(chr8, reorder = T)
+# fill in missing data (if any)
 chr8 <- fill.geno(chr8, method = c("argmax"), error.prob = 0.0001, map.function = "kosambi")
 geno.image(chr8, reorder = T)
+# calculate genotype probabilities
 chr8 <- calc.genoprob(chr8, step = 2, error.prob = 0.0001)
+# simulate genos
 chr8 <- sim.geno(chr8, n.draws = 25, step = 0, error.prob = 0.0001, map.function = "kosambi", stepwidth = "fixed")
+# summarize and write out map for linkage map viz
 summaryMap(chr8)
 map <- pullMap(chr8)
-write.csv(map, "map8_march2020.csv", row.names = F)
-chr8s1 <- scanone(chr8, method = "imp", pheno.col = c(2:7))
+write.csv(map, "chr8_map.csv", row.names = F)
+# scan for QTL
+chr8s1 <- scanone(chr8, method = "imp", pheno.col = c(2:5))
 summary <- summary(chr8s1)
 write.csv(summary, "chr8_summary.csv")
-perms <- scanone(chr8, pheno.col = c(2:7), n.perm = 10000, verbose = T, method = "imp")
+# run permutations
+perms <- scanone(chr8, pheno.col = c(2:5), n.perm = 1000, verbose = T, method = "imp")
 perms_summary <- summary(perms)
 write.csv(perms_summary, "chr8_perms.csv")
+# plot chrom scan and write out as PDF
 phenos <- phenames(chr8)
-viridis <- viridis_pal(direction = 1, option = "D")
-pal <- viridisLite::viridis(5, option = "D")
 pdf('chr8_scan.pdf')
-plot(chr8s1, main = "chr8 - March 13", ylim = c(0,5), ylab = "LOD score")
+plot(chr8s1, main = "chr8 - May 2021", ylim = c(0,5), ylab = "LOD score")
 for (i in 1:length(phenos)) plot(chr8s1, add = T, lodcolumn = i, col = pal[i])
 add.threshold(out = chr8s1, perms = perms, alpha = 0.05, col = pal[1], lty = 2, lodcolumn = 1)
 add.threshold(out = chr8s1, perms = perms, alpha = 0.05, col = pal[2], lty = 2, lodcolumn = 2)
 add.threshold(out = chr8s1, perms = perms, alpha = 0.05, col = pal[3], lty = 2, lodcolumn = 3)
 add.threshold(out = chr8s1, perms = perms, alpha = 0.05, col = pal[4], lty = 2, lodcolumn = 4)
-add.threshold(out = chr8s1, perms = perms, alpha = 0.05, col = pal[5], lty = 2, lodcolumn = 5)
 dev.off()
 
-mod <- pullSigQTL(chr8, pheno.col = c(2:7), s1.output = chr8s1, perm.output = perms, returnQTLModel = F, alpha = 0.05)
-cis8 <- calcCis(chr8, s1.output = chr8s1, perm.output = perms)
-
-#### chr 9 ####
-chr9 <- read.cross(file = "chr9.csv", format = "csv", na.strings = c("-1","NA"), genotypes = c("0","1","2"), alleles = c("A","B"), estimate.map = F)
+#### chr9 ####
+# load in data
+chr9 <- read.cross(file = "k1_chr9.csv", format = "csv", na.strings = c("-1","NA"), genotypes = c("AA","AB","BA", "BB"), alleles = c("A","B"), estimate.map = F)
+# jitter markers at same position
 chr9 <- jittermap(chr9)
+# drop null or duplicate markers
 chr9 <- drop.nullmarkers(chr9)
 chr9 <- drop.dupmarkers(chr9, verbose = T)
-dupmark <- findDupMarkers(chr9)
+# check total markers after pruning
 totmar(chr9)
-chr9 <- drop.markers(chr9, unlist(dupmark))
-totmar(chr9)
+# check for missing data
 geno.image(chr9, reorder = T)
+# fill in missing data (if any)
 chr9 <- fill.geno(chr9, method = c("argmax"), error.prob = 0.0001, map.function = "kosambi")
 geno.image(chr9, reorder = T)
+# calculate genotype probabilities
 chr9 <- calc.genoprob(chr9, step = 2, error.prob = 0.0001)
+# simulate genos
 chr9 <- sim.geno(chr9, n.draws = 25, step = 0, error.prob = 0.0001, map.function = "kosambi", stepwidth = "fixed")
+# summarize and write out map for linkage map viz
 summaryMap(chr9)
 map <- pullMap(chr9)
-write.csv(map, "map9_march2020.csv", row.names = F)
-chr9s1 <- scanone(chr9, method = "imp", pheno.col = c(2:7))
+write.csv(map, "chr9_map.csv", row.names = F)
+# scan for QTL
+chr9s1 <- scanone(chr9, method = "imp", pheno.col = c(2:5))
 summary <- summary(chr9s1)
 write.csv(summary, "chr9_summary.csv")
-perms <- scanone(chr9, pheno.col = c(2:7), n.perm = 10000, verbose = T, method = "imp")
+# run permutations
+perms <- scanone(chr9, pheno.col = c(2:5), n.perm = 1000, verbose = T, method = "imp")
 perms_summary <- summary(perms)
 write.csv(perms_summary, "chr9_perms.csv")
+# plot chrom scan and write out as PDF
 phenos <- phenames(chr9)
-viridis <- viridis_pal(direction = 1, option = "D")
-pal <- viridisLite::viridis(5, option = "D")
 pdf('chr9_scan.pdf')
-plot(chr9s1, main = "chr9 - March 13", ylim = c(0,5), ylab = "LOD score")
+plot(chr9s1, main = "chr9 - May 2021", ylim = c(0,5), ylab = "LOD score")
 for (i in 1:length(phenos)) plot(chr9s1, add = T, lodcolumn = i, col = pal[i])
 add.threshold(out = chr9s1, perms = perms, alpha = 0.05, col = pal[1], lty = 2, lodcolumn = 1)
 add.threshold(out = chr9s1, perms = perms, alpha = 0.05, col = pal[2], lty = 2, lodcolumn = 2)
 add.threshold(out = chr9s1, perms = perms, alpha = 0.05, col = pal[3], lty = 2, lodcolumn = 3)
 add.threshold(out = chr9s1, perms = perms, alpha = 0.05, col = pal[4], lty = 2, lodcolumn = 4)
-add.threshold(out = chr9s1, perms = perms, alpha = 0.05, col = pal[5], lty = 2, lodcolumn = 5)
 dev.off()
 
-mod <- pullSigQTL(chr9, pheno.col = c(2:7), s1.output = chr9s1, perm.output = perms, returnQTLModel = F, alpha = 0.05)
-cis9 <- calcCis(chr9, s1.output = chr9s1, perm.output = perms)
-
-#### chr 10 ####
-chr10 <- read.cross(file = "chr10.csv", format = "csv", na.strings = c("-1","NA"), genotypes = c("0","1","2"), alleles = c("A","B"), estimate.map = F)
+#### chr10 ####
+# load in data
+chr10 <- read.cross(file = "k1_chr10.csv", format = "csv", na.strings = c("-1","NA"), genotypes = c("AA","AB","BA", "BB"), alleles = c("A","B"), estimate.map = F)
+# jitter markers at same position
 chr10 <- jittermap(chr10)
+# drop null or duplicate markers
 chr10 <- drop.nullmarkers(chr10)
 chr10 <- drop.dupmarkers(chr10, verbose = T)
-dupmark <- findDupMarkers(chr10)
+# check total markers after pruning
 totmar(chr10)
-chr10 <- drop.markers(chr10, unlist(dupmark))
-totmar(chr10)
+# check for missing data
 geno.image(chr10, reorder = T)
+# fill in missing data (if any)
 chr10 <- fill.geno(chr10, method = c("argmax"), error.prob = 0.0001, map.function = "kosambi")
 geno.image(chr10, reorder = T)
+# calculate genotype probabilities
 chr10 <- calc.genoprob(chr10, step = 2, error.prob = 0.0001)
+# simulate genos
 chr10 <- sim.geno(chr10, n.draws = 25, step = 0, error.prob = 0.0001, map.function = "kosambi", stepwidth = "fixed")
+# summarize and write out map for linkage map viz
 summaryMap(chr10)
 map <- pullMap(chr10)
-write.csv(map, "map10_march2020.csv", row.names = F)
-chr10s1 <- scanone(chr10, method = "imp", pheno.col = c(2:7))
+write.csv(map, "chr10_map.csv", row.names = F)
+# scan for QTL
+chr10s1 <- scanone(chr10, method = "imp", pheno.col = c(2:5))
 summary <- summary(chr10s1)
 write.csv(summary, "chr10_summary.csv")
-perms <- scanone(chr10, pheno.col = c(2:7), n.perm = 10000, verbose = T, method = "imp")
+# run permutations
+perms <- scanone(chr10, pheno.col = c(2:5), n.perm = 1000, verbose = T, method = "imp")
 perms_summary <- summary(perms)
 write.csv(perms_summary, "chr10_perms.csv")
+# plot chrom scan and write out as PDF
 phenos <- phenames(chr10)
-viridis <- viridis_pal(direction = 1, option = "D")
-pal <- viridisLite::viridis(5, option = "D")
+
+
 pdf('chr10_scan.pdf')
-plot(chr10s1, main = "chr10 - March 13", ylim = c(0,5), ylab = "LOD score")
+plot(chr10s1, main = "chr10 - May 2021", ylim = c(0,5), ylab = "LOD score")
 for (i in 1:length(phenos)) plot(chr10s1, add = T, lodcolumn = i, col = pal[i])
 add.threshold(out = chr10s1, perms = perms, alpha = 0.05, col = pal[1], lty = 2, lodcolumn = 1)
 add.threshold(out = chr10s1, perms = perms, alpha = 0.05, col = pal[2], lty = 2, lodcolumn = 2)
 add.threshold(out = chr10s1, perms = perms, alpha = 0.05, col = pal[3], lty = 2, lodcolumn = 3)
 add.threshold(out = chr10s1, perms = perms, alpha = 0.05, col = pal[4], lty = 2, lodcolumn = 4)
-add.threshold(out = chr10s1, perms = perms, alpha = 0.05, col = pal[5], lty = 2, lodcolumn = 5)
 dev.off()
 
-mod <- pullSigQTL(chr10, pheno.col = c(2:7), s1.output = chr10s1, perm.output = perms, returnQTLModel = F, alpha = 0.05)
-cis10 <- calcCis(chr10, s1.output = chr10s1, perm.output = perms)
-
-#### chr 11 ####
-chr11 <- read.cross(file = "chr11.csv", format = "csv", na.strings = c("-1","NA"), genotypes = c("0","1","2"), alleles = c("A","B"), estimate.map = F)
+#### chr11 ####
+# load in data
+chr11 <- read.cross(file = "k1_chr11.csv", format = "csv", na.strings = c("-1","NA"), genotypes = c("AA","AB","BA", "BB"), alleles = c("A","B"), estimate.map = F)
+# jitter markers at same position
 chr11 <- jittermap(chr11)
+# drop null or duplicate markers
 chr11 <- drop.nullmarkers(chr11)
 chr11 <- drop.dupmarkers(chr11, verbose = T)
-dupmark <- findDupMarkers(chr11)
+# check total markers after pruning
 totmar(chr11)
-chr11 <- drop.markers(chr11, unlist(dupmark))
-totmar(chr11)
+# check for missing data
 geno.image(chr11, reorder = T)
+# fill in missing data (if any)
 chr11 <- fill.geno(chr11, method = c("argmax"), error.prob = 0.0001, map.function = "kosambi")
 geno.image(chr11, reorder = T)
+# calculate genotype probabilities
 chr11 <- calc.genoprob(chr11, step = 2, error.prob = 0.0001)
+# simulate genos
 chr11 <- sim.geno(chr11, n.draws = 25, step = 0, error.prob = 0.0001, map.function = "kosambi", stepwidth = "fixed")
+# summarize and write out map for linkage map viz
 summaryMap(chr11)
 map <- pullMap(chr11)
-write.csv(map, "map11_march2020.csv", row.names = F)
-chr11s1 <- scanone(chr11, method = "imp", pheno.col = c(2:7))
+write.csv(map, "chr11_map.csv", row.names = F)
+# scan for QTL
+chr11s1 <- scanone(chr11, method = "imp", pheno.col = c(2:5))
 summary <- summary(chr11s1)
 write.csv(summary, "chr11_summary.csv")
-perms <- scanone(chr11, pheno.col = c(2:7), n.perm = 10000, verbose = T, method = "imp")
+# run permutations
+perms <- scanone(chr11, pheno.col = c(2:5), n.perm = 1000, verbose = T, method = "imp")
 perms_summary <- summary(perms)
 write.csv(perms_summary, "chr11_perms.csv")
+# plot chrom scan and write out as PDF
 phenos <- phenames(chr11)
-viridis <- viridis_pal(direction = 1, option = "D")
-pal <- viridisLite::viridis(5, option = "D")
+
+
 pdf('chr11_scan.pdf')
-plot(chr11s1, main = "chr11 - March 13", ylim = c(0,5), ylab = "LOD score")
+plot(chr11s1, main = "chr11 - May 2021", ylim = c(0,5), ylab = "LOD score")
 for (i in 1:length(phenos)) plot(chr11s1, add = T, lodcolumn = i, col = pal[i])
 add.threshold(out = chr11s1, perms = perms, alpha = 0.05, col = pal[1], lty = 2, lodcolumn = 1)
 add.threshold(out = chr11s1, perms = perms, alpha = 0.05, col = pal[2], lty = 2, lodcolumn = 2)
 add.threshold(out = chr11s1, perms = perms, alpha = 0.05, col = pal[3], lty = 2, lodcolumn = 3)
 add.threshold(out = chr11s1, perms = perms, alpha = 0.05, col = pal[4], lty = 2, lodcolumn = 4)
-add.threshold(out = chr11s1, perms = perms, alpha = 0.05, col = pal[5], lty = 2, lodcolumn = 5)
 dev.off()
 
-mod <- pullSigQTL(chr11, pheno.col = c(2:7), s1.output = chr11s1, perm.output = perms, returnQTLModel = F, alpha = 0.05)
-cis11 <- calcCis(chr11, s1.output = chr11s1, perm.output = perms)
-
-#### chr 12 ####
-chr12 <- read.cross(file = "chr12.csv", format = "csv", na.strings = c("-1","NA"), genotypes = c("0","1","2"), alleles = c("A","B"), estimate.map = F)
+#### chr12 ####
+# load in data
+chr12 <- read.cross(file = "k1_chr12.csv", format = "csv", na.strings = c("-1","NA"), genotypes = c("AA","AB","BA", "BB"), alleles = c("A","B"), estimate.map = F)
+# jitter markers at same position
 chr12 <- jittermap(chr12)
+# drop null or duplicate markers
 chr12 <- drop.nullmarkers(chr12)
 chr12 <- drop.dupmarkers(chr12, verbose = T)
-dupmark <- findDupMarkers(chr12)
+# check total markers after pruning
 totmar(chr12)
-chr12 <- drop.markers(chr12, unlist(dupmark))
-totmar(chr12)
+# check for missing data
 geno.image(chr12, reorder = T)
+# fill in missing data (if any)
 chr12 <- fill.geno(chr12, method = c("argmax"), error.prob = 0.0001, map.function = "kosambi")
 geno.image(chr12, reorder = T)
+# calculate genotype probabilities
 chr12 <- calc.genoprob(chr12, step = 2, error.prob = 0.0001)
+# simulate genos
 chr12 <- sim.geno(chr12, n.draws = 25, step = 0, error.prob = 0.0001, map.function = "kosambi", stepwidth = "fixed")
+# summarize and write out map for linkage map viz
 summaryMap(chr12)
 map <- pullMap(chr12)
-write.csv(map, "map12_march2020.csv", row.names = F)
-chr12s1 <- scanone(chr12, method = "imp", pheno.col = c(2:7))
+write.csv(map, "chr12_map.csv", row.names = F)
+# scan for QTL
+chr12s1 <- scanone(chr12, method = "imp", pheno.col = c(2:5))
 summary <- summary(chr12s1)
 write.csv(summary, "chr12_summary.csv")
-perms <- scanone(chr12, pheno.col = c(2:7), n.perm = 10000, verbose = T, method = "imp")
+# run permutations
+perms <- scanone(chr12, pheno.col = c(2:5), n.perm = 1000, verbose = T, method = "imp")
 perms_summary <- summary(perms)
 write.csv(perms_summary, "chr12_perms.csv")
+# plot chrom scan and write out as PDF
 phenos <- phenames(chr12)
-viridis <- viridis_pal(direction = 1, option = "D")
-pal <- viridisLite::viridis(5, option = "D")
+
+
 pdf('chr12_scan.pdf')
-plot(chr12s1, main = "chr12 - March 13", ylim = c(0,5), ylab = "LOD score")
+plot(chr12s1, main = "chr12 - May 2021", ylim = c(0,5), ylab = "LOD score")
 for (i in 1:length(phenos)) plot(chr12s1, add = T, lodcolumn = i, col = pal[i])
 add.threshold(out = chr12s1, perms = perms, alpha = 0.05, col = pal[1], lty = 2, lodcolumn = 1)
 add.threshold(out = chr12s1, perms = perms, alpha = 0.05, col = pal[2], lty = 2, lodcolumn = 2)
 add.threshold(out = chr12s1, perms = perms, alpha = 0.05, col = pal[3], lty = 2, lodcolumn = 3)
 add.threshold(out = chr12s1, perms = perms, alpha = 0.05, col = pal[4], lty = 2, lodcolumn = 4)
-add.threshold(out = chr12s1, perms = perms, alpha = 0.05, col = pal[5], lty = 2, lodcolumn = 5)
 dev.off()
 
-mod <- pullSigQTL(chr12, pheno.col = c(2:7), s1.output = chr12s1, perm.output = perms, returnQTLModel = F, alpha = 0.05)
-cis12 <- calcCis(chr12, s1.output = chr12s1, perm.output = perms)
-
-#### chr 13 #### 
-chr13 <- read.cross(file = "chr13.csv", format = "csv", na.strings = c("-1","NA"), genotypes = c("0","1","2"), alleles = c("A","B"), estimate.map = F)
+#### chr13 ####
+# load in data
+chr13 <- read.cross(file = "k1_chr13.csv", format = "csv", na.strings = c("-1","NA"), genotypes = c("AA","AB","BA", "BB"), alleles = c("A","B"), estimate.map = F)
+# jitter markers at same position
 chr13 <- jittermap(chr13)
+# drop null or duplicate markers
 chr13 <- drop.nullmarkers(chr13)
 chr13 <- drop.dupmarkers(chr13, verbose = T)
-dupmark <- findDupMarkers(chr13)
+# check total markers after pruning
 totmar(chr13)
-chr13 <- drop.markers(chr13, unlist(dupmark))
-totmar(chr13)
+# check for missing data
 geno.image(chr13, reorder = T)
+# fill in missing data (if any)
 chr13 <- fill.geno(chr13, method = c("argmax"), error.prob = 0.0001, map.function = "kosambi")
 geno.image(chr13, reorder = T)
+# calculate genotype probabilities
 chr13 <- calc.genoprob(chr13, step = 2, error.prob = 0.0001)
+# simulate genos
 chr13 <- sim.geno(chr13, n.draws = 25, step = 0, error.prob = 0.0001, map.function = "kosambi", stepwidth = "fixed")
+# summarize and write out map for linkage map viz
 summaryMap(chr13)
 map <- pullMap(chr13)
-write.csv(map, "map13_march2020.csv", row.names = F)
-chr13s1 <- scanone(chr13, method = "imp", pheno.col = c(2:7))
+write.csv(map, "chr13_map.csv", row.names = F)
+# scan for QTL
+chr13s1 <- scanone(chr13, method = "imp", pheno.col = c(2:5))
 summary <- summary(chr13s1)
 write.csv(summary, "chr13_summary.csv")
-perms <- scanone(chr13, pheno.col = c(2:7), n.perm = 10000, verbose = T, method = "imp")
+# run permutations
+perms <- scanone(chr13, pheno.col = c(2:5), n.perm = 1000, verbose = T, method = "imp")
 perms_summary <- summary(perms)
 write.csv(perms_summary, "chr13_perms.csv")
+# plot chrom scan and write out as PDF
 phenos <- phenames(chr13)
-viridis <- viridis_pal(direction = 1, option = "D")
-pal <- viridisLite::viridis(5, option = "D")
+
+
 pdf('chr13_scan.pdf')
-plot(chr13s1, main = "chr13 - March 13", ylim = c(0,5), ylab = "LOD score")
+plot(chr13s1, main = "chr13 - May 2021", ylim = c(0,5), ylab = "LOD score")
 for (i in 1:length(phenos)) plot(chr13s1, add = T, lodcolumn = i, col = pal[i])
 add.threshold(out = chr13s1, perms = perms, alpha = 0.05, col = pal[1], lty = 2, lodcolumn = 1)
 add.threshold(out = chr13s1, perms = perms, alpha = 0.05, col = pal[2], lty = 2, lodcolumn = 2)
 add.threshold(out = chr13s1, perms = perms, alpha = 0.05, col = pal[3], lty = 2, lodcolumn = 3)
 add.threshold(out = chr13s1, perms = perms, alpha = 0.05, col = pal[4], lty = 2, lodcolumn = 4)
-add.threshold(out = chr13s1, perms = perms, alpha = 0.05, col = pal[5], lty = 2, lodcolumn = 5)
 dev.off()
 
-mod <- pullSigQTL(chr13, pheno.col = c(2:7), s1.output = chr13s1, perm.output = perms, returnQTLModel = F, alpha = 0.05)
-cis13 <- calcCis(chr13, s1.output = chr13s1, perm.output = perms)
-
-#### chr 14 ####
-chr14 <- read.cross(file = "chr14.csv", format = "csv", na.strings = c("-1","NA"), genotypes = c("0","1","2"), alleles = c("A","B"), estimate.map = F)
+#### chr14 ####
+# load in data
+chr14 <- read.cross(file = "k1_chr14.csv", format = "csv", na.strings = c("-1","NA"), genotypes = c("AA","AB","BA", "BB"), alleles = c("A","B"), estimate.map = F)
+# jitter markers at same position
 chr14 <- jittermap(chr14)
+# drop null or duplicate markers
 chr14 <- drop.nullmarkers(chr14)
 chr14 <- drop.dupmarkers(chr14, verbose = T)
-dupmark <- findDupMarkers(chr14)
+# check total markers after pruning
 totmar(chr14)
-chr14 <- drop.markers(chr14, unlist(dupmark))
-totmar(chr14)
+# check for missing data
 geno.image(chr14, reorder = T)
+# fill in missing data (if any)
 chr14 <- fill.geno(chr14, method = c("argmax"), error.prob = 0.0001, map.function = "kosambi")
 geno.image(chr14, reorder = T)
+# calculate genotype probabilities
 chr14 <- calc.genoprob(chr14, step = 2, error.prob = 0.0001)
+# simulate genos
 chr14 <- sim.geno(chr14, n.draws = 25, step = 0, error.prob = 0.0001, map.function = "kosambi", stepwidth = "fixed")
+# summarize and write out map for linkage map viz
 summaryMap(chr14)
 map <- pullMap(chr14)
-write.csv(map, "map14_march2020.csv", row.names = F)
-chr14s1 <- scanone(chr14, method = "imp", pheno.col = c(2:7))
+write.csv(map, "chr14_map.csv", row.names = F)
+# scan for QTL
+chr14s1 <- scanone(chr14, method = "imp", pheno.col = c(2:5))
 summary <- summary(chr14s1)
 write.csv(summary, "chr14_summary.csv")
-perms <- scanone(chr14, pheno.col = c(2:7), n.perm = 10000, verbose = T, method = "imp")
+# run permutations
+perms <- scanone(chr14, pheno.col = c(2:5), n.perm = 1000, verbose = T, method = "imp")
 perms_summary <- summary(perms)
 write.csv(perms_summary, "chr14_perms.csv")
+# plot chrom scan and write out as PDF
 phenos <- phenames(chr14)
-viridis <- viridis_pal(direction = 1, option = "D")
-pal <- viridisLite::viridis(5, option = "D")
+
+
 pdf('chr14_scan.pdf')
-plot(chr14s1, main = "chr14 - March 13", ylim = c(0,5), ylab = "LOD score")
+plot(chr14s1, main = "chr14 - May 2021", ylim = c(0,5), ylab = "LOD score")
 for (i in 1:length(phenos)) plot(chr14s1, add = T, lodcolumn = i, col = pal[i])
 add.threshold(out = chr14s1, perms = perms, alpha = 0.05, col = pal[1], lty = 2, lodcolumn = 1)
 add.threshold(out = chr14s1, perms = perms, alpha = 0.05, col = pal[2], lty = 2, lodcolumn = 2)
 add.threshold(out = chr14s1, perms = perms, alpha = 0.05, col = pal[3], lty = 2, lodcolumn = 3)
 add.threshold(out = chr14s1, perms = perms, alpha = 0.05, col = pal[4], lty = 2, lodcolumn = 4)
-add.threshold(out = chr14s1, perms = perms, alpha = 0.05, col = pal[5], lty = 2, lodcolumn = 5)
 dev.off()
 
-mod <- pullSigQTL(chr14, pheno.col = c(2:7), s1.output = chr14s1, perm.output = perms, returnQTLModel = F, alpha = 0.05)
-cis14 <- calcCis(chr14, s1.output = chr14s1, perm.output = perms)
-
-#### chr 15 ####
-chr15 <- read.cross(file = "chr15.csv", format = "csv", na.strings = c("-1","NA"), genotypes = c("0","1","2"), alleles = c("A","B"), estimate.map = F)
+#### chr15 ####
+# load in data
+chr15 <- read.cross(file = "k1_chr15.csv", format = "csv", na.strings = c("-1","NA"), genotypes = c("AA","AB","BA", "BB"), alleles = c("A","B"), estimate.map = F)
+# jitter markers at same position
 chr15 <- jittermap(chr15)
+# drop null or duplicate markers
 chr15 <- drop.nullmarkers(chr15)
 chr15 <- drop.dupmarkers(chr15, verbose = T)
-dupmark <- findDupMarkers(chr15)
+# check total markers after pruning
 totmar(chr15)
-chr15 <- drop.markers(chr15, unlist(dupmark))
-totmar(chr15)
+# check for missing data
 geno.image(chr15, reorder = T)
+# fill in missing data (if any)
 chr15 <- fill.geno(chr15, method = c("argmax"), error.prob = 0.0001, map.function = "kosambi")
 geno.image(chr15, reorder = T)
+# calculate genotype probabilities
 chr15 <- calc.genoprob(chr15, step = 2, error.prob = 0.0001)
+# simulate genos
 chr15 <- sim.geno(chr15, n.draws = 25, step = 0, error.prob = 0.0001, map.function = "kosambi", stepwidth = "fixed")
+# summarize and write out map for linkage map viz
 summaryMap(chr15)
 map <- pullMap(chr15)
-write.csv(map, "map15_march2020.csv", row.names = F)
-chr15s1 <- scanone(chr15, method = "imp", pheno.col = c(2:7))
+write.csv(map, "chr15_map.csv", row.names = F)
+# scan for QTL
+chr15s1 <- scanone(chr15, method = "imp", pheno.col = c(2:5))
 summary <- summary(chr15s1)
 write.csv(summary, "chr15_summary.csv")
-perms <- scanone(chr15, pheno.col = c(2:7), n.perm = 10000, verbose = T, method = "imp")
+# run permutations
+perms <- scanone(chr15, pheno.col = c(2:5), n.perm = 1000, verbose = T, method = "imp")
 perms_summary <- summary(perms)
 write.csv(perms_summary, "chr15_perms.csv")
+# plot chrom scan and write out as PDF
 phenos <- phenames(chr15)
-viridis <- viridis_pal(direction = 1, option = "D")
-pal <- viridisLite::viridis(5, option = "D")
+
+
 pdf('chr15_scan.pdf')
-plot(chr15s1, main = "chr15 - March 13", ylim = c(0,5), ylab = "LOD score")
+plot(chr15s1, main = "chr15 - May 2021", ylim = c(0,5), ylab = "LOD score")
 for (i in 1:length(phenos)) plot(chr15s1, add = T, lodcolumn = i, col = pal[i])
 add.threshold(out = chr15s1, perms = perms, alpha = 0.05, col = pal[1], lty = 2, lodcolumn = 1)
 add.threshold(out = chr15s1, perms = perms, alpha = 0.05, col = pal[2], lty = 2, lodcolumn = 2)
 add.threshold(out = chr15s1, perms = perms, alpha = 0.05, col = pal[3], lty = 2, lodcolumn = 3)
 add.threshold(out = chr15s1, perms = perms, alpha = 0.05, col = pal[4], lty = 2, lodcolumn = 4)
-add.threshold(out = chr15s1, perms = perms, alpha = 0.05, col = pal[5], lty = 2, lodcolumn = 5)
 dev.off()
 
-mod <- pullSigQTL(chr15, pheno.col = c(2:7), s1.output = chr15s1, perm.output = perms, returnQTLModel = F, alpha = 0.05)
-cis15 <- calcCis(chr15, s1.output = chr15s1, perm.output = perms)
-
-#### chr 16 #### 
-chr16 <- read.cross(file = "chr16.csv", format = "csv", na.strings = c("-1","NA"), genotypes = c("0","1","2"), alleles = c("A","B"), estimate.map = F)
+#### chr16 ####
+# load in data
+chr16 <- read.cross(file = "k1_chr16.csv", format = "csv", na.strings = c("-1","NA"), genotypes = c("AA","AB","BA", "BB"), alleles = c("A","B"), estimate.map = F)
+# jitter markers at same position
 chr16 <- jittermap(chr16)
+# drop null or duplicate markers
 chr16 <- drop.nullmarkers(chr16)
 chr16 <- drop.dupmarkers(chr16, verbose = T)
-dupmark <- findDupMarkers(chr16)
+# check total markers after pruning
 totmar(chr16)
-chr16 <- drop.markers(chr16, unlist(dupmark))
-totmar(chr16)
+# check for missing data
 geno.image(chr16, reorder = T)
+# fill in missing data (if any)
 chr16 <- fill.geno(chr16, method = c("argmax"), error.prob = 0.0001, map.function = "kosambi")
 geno.image(chr16, reorder = T)
+# calculate genotype probabilities
 chr16 <- calc.genoprob(chr16, step = 2, error.prob = 0.0001)
+# simulate genos
 chr16 <- sim.geno(chr16, n.draws = 25, step = 0, error.prob = 0.0001, map.function = "kosambi", stepwidth = "fixed")
+# summarize and write out map for linkage map viz
 summaryMap(chr16)
 map <- pullMap(chr16)
-write.csv(map, "map16_march2020.csv", row.names = F)
-chr16s1 <- scanone(chr16, method = "imp", pheno.col = c(2:7))
+write.csv(map, "chr16_map.csv", row.names = F)
+# scan for QTL
+chr16s1 <- scanone(chr16, method = "imp", pheno.col = c(2:5))
 summary <- summary(chr16s1)
 write.csv(summary, "chr16_summary.csv")
-perms <- scanone(chr16, pheno.col = c(2:7), n.perm = 10000, verbose = T, method = "imp")
+# run permutations
+perms <- scanone(chr16, pheno.col = c(2:5), n.perm = 1000, verbose = T, method = "imp")
 perms_summary <- summary(perms)
 write.csv(perms_summary, "chr16_perms.csv")
+# plot chrom scan and write out as PDF
 phenos <- phenames(chr16)
-viridis <- viridis_pal(direction = 1, option = "D")
-pal <- viridisLite::viridis(5, option = "D")
+
 pdf('chr16_scan.pdf')
-plot(chr16s1, main = "chr16 - March 13", ylim = c(0,5), ylab = "LOD score")
+plot(chr16s1, main = "chr16 - May 2021", ylim = c(0,5), ylab = "LOD score")
 for (i in 1:length(phenos)) plot(chr16s1, add = T, lodcolumn = i, col = pal[i])
 add.threshold(out = chr16s1, perms = perms, alpha = 0.05, col = pal[1], lty = 2, lodcolumn = 1)
 add.threshold(out = chr16s1, perms = perms, alpha = 0.05, col = pal[2], lty = 2, lodcolumn = 2)
 add.threshold(out = chr16s1, perms = perms, alpha = 0.05, col = pal[3], lty = 2, lodcolumn = 3)
 add.threshold(out = chr16s1, perms = perms, alpha = 0.05, col = pal[4], lty = 2, lodcolumn = 4)
-add.threshold(out = chr16s1, perms = perms, alpha = 0.05, col = pal[5], lty = 2, lodcolumn = 5)
 dev.off()
 
-mod <- pullSigQTL(chr16, pheno.col = c(2:7), s1.output = chr16s1, perm.output = perms, returnQTLModel = F, alpha = 0.05)
-cis16 <- calcCis(chr16, s1.output = chr16s1, perm.output = perms)
-
-#### chr 17 ####
-chr17 <- read.cross(file = "chr17.csv", format = "csv", na.strings = c("-1","NA"), genotypes = c("0","1","2"), alleles = c("A","B"), estimate.map = F)
+#### chr17 - CBT ####
+# load in data
+chr17 <- read.cross(file = "k1_chr17.csv", format = "csv", na.strings = c("-1","NA"), genotypes = c("AA","AB","BA", "BB"), alleles = c("A","B"), estimate.map = F)
+# jitter markers at same position
 chr17 <- jittermap(chr17)
+# drop null or duplicate markers
 chr17 <- drop.nullmarkers(chr17)
 chr17 <- drop.dupmarkers(chr17, verbose = T)
-dupmark <- findDupMarkers(chr17)
+# check total markers after pruning
 totmar(chr17)
-chr17 <- drop.markers(chr17, unlist(dupmark))
-totmar(chr17)
+# check for missing data
 geno.image(chr17, reorder = T)
+# fill in missing data (if any)
 chr17 <- fill.geno(chr17, method = c("argmax"), error.prob = 0.0001, map.function = "kosambi")
 geno.image(chr17, reorder = T)
+# calculate genotype probabilities
 chr17 <- calc.genoprob(chr17, step = 2, error.prob = 0.0001)
+# simulate genos
 chr17 <- sim.geno(chr17, n.draws = 25, step = 0, error.prob = 0.0001, map.function = "kosambi", stepwidth = "fixed")
+# summarize and write out map for linkage map viz
 summaryMap(chr17)
 map <- pullMap(chr17)
-write.csv(map, "map17_march2020.csv", row.names = F)
-chr17s1 <- scanone(chr17, method = "imp", pheno.col = c(2:7))
+write.csv(map, "chr17_map.csv", row.names = F)
+# scan for QTL
+chr17s1 <- scanone(chr17, method = "imp", pheno.col = c(2:5))
 summary <- summary(chr17s1)
 write.csv(summary, "chr17_summary.csv")
-perms <- scanone(chr17, pheno.col = c(2:7), n.perm = 10000, verbose = T, method = "imp")
+# run permutations
+perms <- scanone(chr17, pheno.col = c(2:5), n.perm = 5000, verbose = T, method = "imp")
 perms_summary <- summary(perms)
 write.csv(perms_summary, "chr17_perms.csv")
+# plot chrom scan and write out as PDF
 phenos <- phenames(chr17)
-viridis <- viridis_pal(direction = 1, option = "D")
-pal <- viridisLite::viridis(5, option = "D")
 pdf('chr17_scan.pdf')
-plot(chr17s1, main = "chr17 - March 13", ylim = c(0,5), ylab = "LOD score")
+plot(chr17s1, main = "chr17 - May 2021 5k", ylim = c(0,5), ylab = "LOD score")
 for (i in 1:length(phenos)) plot(chr17s1, add = T, lodcolumn = i, col = pal[i])
 add.threshold(out = chr17s1, perms = perms, alpha = 0.05, col = pal[1], lty = 2, lodcolumn = 1)
 add.threshold(out = chr17s1, perms = perms, alpha = 0.05, col = pal[2], lty = 2, lodcolumn = 2)
 add.threshold(out = chr17s1, perms = perms, alpha = 0.05, col = pal[3], lty = 2, lodcolumn = 3)
 add.threshold(out = chr17s1, perms = perms, alpha = 0.05, col = pal[4], lty = 2, lodcolumn = 4)
-add.threshold(out = chr17s1, perms = perms, alpha = 0.05, col = pal[5], lty = 2, lodcolumn = 5)
 dev.off()
 
-mod <- pullSigQTL(chr17, pheno.col = c(2:7), s1.output = chr17s1, perm.output = perms, returnQTLModel = F, alpha = 0.05)
-cis17 <- calcCis(chr17, s1.output = chr17s1, perm.output = perms)
+# look at PxG plots for peaks
+summary(chr17s1, threshold = 2.7194388, format = c("onepheno"), lodcolumn = 4, perms = perms, pvales = T)
+pdf('chr17_core_pxg.pdf')
+plotPXG(chr17, marker = "75", pheno.col = 5, jitter = 1)
+dev.off()
+pdf('chr17_core_eff.pdf')
+effectplot(chr17, pheno.col = 5, mname1 = 75)
+dev.off()
+pdf("chr17_core_effScan.pdf")
+effectscan(chr17, pheno.col = 5, chr = 17, get.se = T, draw = T)
+dev.off()
+lodint(chr17s1, chr = 17, lodcolumn = 4, expandtomarkers = F)
+q1 <- makeqtl(chr17, chr = 17, pos = 80.91639, qtl.name = "Core", what = "prob")
+fitq1 <- fitqtl(chr17, pheno.col = 5, qtl = q1, method = "hk", model = "normal", get.ests = T)
+summary(fitq1) # PVE = 33.4%, a = -1.0475 +/- 0.3158, d =  0.3819 +/- 0.4546, p = 0.001856709
 
-#### chr 18 ####
-chr18 <- read.cross(file = "chr18.csv", format = "csv", na.strings = c("-1","NA"), genotypes = c("0","1","2"), alleles = c("A","B"), estimate.map = F)
+#### chr18 ####
+# load in data
+chr18 <- read.cross(file = "k1_chr18.csv", format = "csv", na.strings = c("-1","NA"), genotypes = c("AA","AB","BA", "BB"), alleles = c("A","B"), estimate.map = F)
+# jitter markers at same position
 chr18 <- jittermap(chr18)
+# drop null or duplicate markers
 chr18 <- drop.nullmarkers(chr18)
 chr18 <- drop.dupmarkers(chr18, verbose = T)
-dupmark <- findDupMarkers(chr18)
+# check total markers after pruning
 totmar(chr18)
-chr18 <- drop.markers(chr18, unlist(dupmark))
-totmar(chr18)
+# check for missing data
 geno.image(chr18, reorder = T)
+# fill in missing data (if any)
 chr18 <- fill.geno(chr18, method = c("argmax"), error.prob = 0.0001, map.function = "kosambi")
 geno.image(chr18, reorder = T)
+# calculate genotype probabilities
 chr18 <- calc.genoprob(chr18, step = 2, error.prob = 0.0001)
+# simulate genos
 chr18 <- sim.geno(chr18, n.draws = 25, step = 0, error.prob = 0.0001, map.function = "kosambi", stepwidth = "fixed")
+# summarize and write out map for linkage map viz
 summaryMap(chr18)
 map <- pullMap(chr18)
-write.csv(map, "map18_march2020.csv", row.names = F)
-chr18s1 <- scanone(chr18, method = "imp", pheno.col = c(2:7))
+write.csv(map, "chr18_map.csv", row.names = F)
+# scan for QTL
+chr18s1 <- scanone(chr18, method = "imp", pheno.col = c(2:5))
 summary <- summary(chr18s1)
 write.csv(summary, "chr18_summary.csv")
-perms <- scanone(chr18, pheno.col = c(2:7), n.perm = 10000, verbose = T, method = "imp")
+# run permutations
+perms <- scanone(chr18, pheno.col = c(2:5), n.perm = 1000, verbose = T, method = "imp")
 perms_summary <- summary(perms)
 write.csv(perms_summary, "chr18_perms.csv")
+# plot chrom scan and write out as PDF
 phenos <- phenames(chr18)
-viridis <- viridis_pal(direction = 1, option = "D")
-pal <- viridisLite::viridis(5, option = "D")
 pdf('chr18_scan.pdf')
-plot(chr18s1, main = "chr18 - March 13", ylim = c(0,5), ylab = "LOD score")
+plot(chr18s1, main = "chr18 - May 2021", ylim = c(0,5), ylab = "LOD score")
 for (i in 1:length(phenos)) plot(chr18s1, add = T, lodcolumn = i, col = pal[i])
 add.threshold(out = chr18s1, perms = perms, alpha = 0.05, col = pal[1], lty = 2, lodcolumn = 1)
 add.threshold(out = chr18s1, perms = perms, alpha = 0.05, col = pal[2], lty = 2, lodcolumn = 2)
 add.threshold(out = chr18s1, perms = perms, alpha = 0.05, col = pal[3], lty = 2, lodcolumn = 3)
 add.threshold(out = chr18s1, perms = perms, alpha = 0.05, col = pal[4], lty = 2, lodcolumn = 4)
-add.threshold(out = chr18s1, perms = perms, alpha = 0.05, col = pal[5], lty = 2, lodcolumn = 5)
 dev.off()
 
-mod <- pullSigQTL(chr18, pheno.col = c(2:7), s1.output = chr18s1, perm.output = perms, returnQTLModel = F, alpha = 0.05)
-cis18 <- calcCis(chr18, s1.output = chr18s1, perm.output = perms)
-
-#### chr 19 ####
-chr19 <- read.cross(file = "chr19.csv", format = "csv", na.strings = c("-1","NA"), genotypes = c("0","1","2"), alleles = c("A","B"), estimate.map = F)
+#### chr19 ####
+# load in data
+chr19 <- read.cross(file = "k1_chr19.csv", format = "csv", na.strings = c("-1","NA"), genotypes = c("AA","AB","BA", "BB"), alleles = c("A","B"), estimate.map = F)
+# jitter markers at same position
 chr19 <- jittermap(chr19)
+# drop null or duplicate markers
 chr19 <- drop.nullmarkers(chr19)
 chr19 <- drop.dupmarkers(chr19, verbose = T)
-dupmark <- findDupMarkers(chr19)
+# check total markers after pruning
 totmar(chr19)
-chr19 <- drop.markers(chr19, unlist(dupmark))
-totmar(chr19)
+# check for missing data
 geno.image(chr19, reorder = T)
+# fill in missing data (if any)
 chr19 <- fill.geno(chr19, method = c("argmax"), error.prob = 0.0001, map.function = "kosambi")
 geno.image(chr19, reorder = T)
+# calculate genotype probabilities
 chr19 <- calc.genoprob(chr19, step = 2, error.prob = 0.0001)
+# simulate genos
 chr19 <- sim.geno(chr19, n.draws = 25, step = 0, error.prob = 0.0001, map.function = "kosambi", stepwidth = "fixed")
+# summarize and write out map for linkage map viz
 summaryMap(chr19)
 map <- pullMap(chr19)
-write.csv(map, "map19_march2020.csv", row.names = F)
-chr19s1 <- scanone(chr19, method = "imp", pheno.col = c(2:7))
+write.csv(map, "chr19_map.csv", row.names = F)
+# scan for QTL
+chr19s1 <- scanone(chr19, method = "imp", pheno.col = c(2:5))
 summary <- summary(chr19s1)
 write.csv(summary, "chr19_summary.csv")
-perms <- scanone(chr19, pheno.col = c(2:7), n.perm = 10000, verbose = T, method = "imp")
+# run permutations
+perms <- scanone(chr19, pheno.col = c(2:5), n.perm = 1000, verbose = T, method = "imp")
 perms_summary <- summary(perms)
 write.csv(perms_summary, "chr19_perms.csv")
+# plot chrom scan and write out as PDF
 phenos <- phenames(chr19)
-viridis <- viridis_pal(direction = 1, option = "D")
-pal <- viridisLite::viridis(5, option = "D")
 pdf('chr19_scan.pdf')
-plot(chr19s1, main = "chr19 - March 13", ylim = c(0,5), ylab = "LOD score")
+plot(chr19s1, main = "chr19 - May 2021", ylim = c(0,5), ylab = "LOD score")
 for (i in 1:length(phenos)) plot(chr19s1, add = T, lodcolumn = i, col = pal[i])
 add.threshold(out = chr19s1, perms = perms, alpha = 0.05, col = pal[1], lty = 2, lodcolumn = 1)
 add.threshold(out = chr19s1, perms = perms, alpha = 0.05, col = pal[2], lty = 2, lodcolumn = 2)
 add.threshold(out = chr19s1, perms = perms, alpha = 0.05, col = pal[3], lty = 2, lodcolumn = 3)
 add.threshold(out = chr19s1, perms = perms, alpha = 0.05, col = pal[4], lty = 2, lodcolumn = 4)
-add.threshold(out = chr19s1, perms = perms, alpha = 0.05, col = pal[5], lty = 2, lodcolumn = 5)
 dev.off()
 
-mod <- pullSigQTL(chr19, pheno.col = c(2:7), s1.output = chr19s1, perm.output = perms, returnQTLModel = F, alpha = 0.05)
-cis19 <- calcCis(chr19, s1.output = chr19s1, perm.output = perms)
-
-#### chr 20 ####
-chr20 <- read.cross(file = "chr20.csv", format = "csv", na.strings = c("-1","NA"), genotypes = c("0","1","2"), alleles = c("A","B"), estimate.map = F)
+#### chr20 ####
+# load in data
+chr20 <- read.cross(file = "k1_chr20.csv", format = "csv", na.strings = c("-1","NA"), genotypes = c("AA","AB","BA", "BB"), alleles = c("A","B"), estimate.map = F)
+# jitter markers at same position
 chr20 <- jittermap(chr20)
+# drop null or duplicate markers
 chr20 <- drop.nullmarkers(chr20)
 chr20 <- drop.dupmarkers(chr20, verbose = T)
-dupmark <- findDupMarkers(chr20)
+# check total markers after pruning
 totmar(chr20)
-chr20 <- drop.markers(chr20, unlist(dupmark))
-totmar(chr20)
+# check for missing data
 geno.image(chr20, reorder = T)
+# fill in missing data (if any)
 chr20 <- fill.geno(chr20, method = c("argmax"), error.prob = 0.0001, map.function = "kosambi")
 geno.image(chr20, reorder = T)
+# calculate genotype probabilities
 chr20 <- calc.genoprob(chr20, step = 2, error.prob = 0.0001)
+# simulate genos
 chr20 <- sim.geno(chr20, n.draws = 25, step = 0, error.prob = 0.0001, map.function = "kosambi", stepwidth = "fixed")
+# summarize and write out map for linkage map viz
 summaryMap(chr20)
 map <- pullMap(chr20)
-write.csv(map, "map20_march2020.csv", row.names = F)
-chr20s1 <- scanone(chr20, method = "imp", pheno.col = c(2:7))
+write.csv(map, "chr20_map.csv", row.names = F)
+# scan for QTL
+chr20s1 <- scanone(chr20, method = "imp", pheno.col = c(2:5))
 summary <- summary(chr20s1)
 write.csv(summary, "chr20_summary.csv")
-perms <- scanone(chr20, pheno.col = c(2:7), n.perm = 10000, verbose = T, method = "imp")
+# run permutations
+perms <- scanone(chr20, pheno.col = c(2:5), n.perm = 1000, verbose = T, method = "imp")
 perms_summary <- summary(perms)
 write.csv(perms_summary, "chr20_perms.csv")
+# plot chrom scan and write out as PDF
 phenos <- phenames(chr20)
-viridis <- viridis_pal(direction = 1, option = "D")
-pal <- viridisLite::viridis(5, option = "D")
 pdf('chr20_scan.pdf')
-plot(chr20s1, main = "chr20 - March 13", ylim = c(0,5), ylab = "LOD score")
+plot(chr20s1, main = "chr20 - May 2021", ylim = c(0,5), ylab = "LOD score")
 for (i in 1:length(phenos)) plot(chr20s1, add = T, lodcolumn = i, col = pal[i])
 add.threshold(out = chr20s1, perms = perms, alpha = 0.05, col = pal[1], lty = 2, lodcolumn = 1)
 add.threshold(out = chr20s1, perms = perms, alpha = 0.05, col = pal[2], lty = 2, lodcolumn = 2)
 add.threshold(out = chr20s1, perms = perms, alpha = 0.05, col = pal[3], lty = 2, lodcolumn = 3)
 add.threshold(out = chr20s1, perms = perms, alpha = 0.05, col = pal[4], lty = 2, lodcolumn = 4)
-add.threshold(out = chr20s1, perms = perms, alpha = 0.05, col = pal[5], lty = 2, lodcolumn = 5)
 dev.off()
 
-mod <- pullSigQTL(chr20, pheno.col = c(2:7), s1.output = chr20s1, perm.output = perms, returnQTLModel = F, alpha = 0.05)
-cis20 <- calcCis(chr20, s1.output = chr20s1, perm.output = perms)
-
-#### chr 21 #### 
-chr21 <- read.cross(file = "chr21.csv", format = "csv", na.strings = c("-1","NA"), genotypes = c("0","1","2"), alleles = c("A","B"), estimate.map = F)
+#### chr21 ####
+# load in data
+chr21 <- read.cross(file = "k1_chr21.csv", format = "csv", na.strings = c("-1","NA"), genotypes = c("AA","AB","BA", "BB"), alleles = c("A","B"), estimate.map = F)
+# jitter markers at same position
 chr21 <- jittermap(chr21)
+# drop null or duplicate markers
 chr21 <- drop.nullmarkers(chr21)
 chr21 <- drop.dupmarkers(chr21, verbose = T)
-dupmark <- findDupMarkers(chr21)
+# check total markers after pruning
 totmar(chr21)
-chr21 <- drop.markers(chr21, unlist(dupmark))
-totmar(chr21)
+# check for missing data
 geno.image(chr21, reorder = T)
+# fill in missing data (if any)
 chr21 <- fill.geno(chr21, method = c("argmax"), error.prob = 0.0001, map.function = "kosambi")
 geno.image(chr21, reorder = T)
+# calculate genotype probabilities
 chr21 <- calc.genoprob(chr21, step = 2, error.prob = 0.0001)
+# simulate genos
 chr21 <- sim.geno(chr21, n.draws = 25, step = 0, error.prob = 0.0001, map.function = "kosambi", stepwidth = "fixed")
+# summarize and write out map for linkage map viz
 summaryMap(chr21)
 map <- pullMap(chr21)
-write.csv(map, "map21_march2020.csv", row.names = F)
-chr21s1 <- scanone(chr21, method = "imp", pheno.col = c(2:7))
+write.csv(map, "chr21_map.csv", row.names = F)
+# scan for QTL
+chr21s1 <- scanone(chr21, method = "imp", pheno.col = c(2:5))
 summary <- summary(chr21s1)
 write.csv(summary, "chr21_summary.csv")
-perms <- scanone(chr21, pheno.col = c(2:7), n.perm = 10000, verbose = T, method = "imp")
+# run permutations
+perms <- scanone(chr21, pheno.col = c(2:5), n.perm = 1000, verbose = T, method = "imp")
 perms_summary <- summary(perms)
 write.csv(perms_summary, "chr21_perms.csv")
+# plot chrom scan and write out as PDF
 phenos <- phenames(chr21)
-viridis <- viridis_pal(direction = 1, option = "D")
-pal <- viridisLite::viridis(5, option = "D")
 pdf('chr21_scan.pdf')
-plot(chr21s1, main = "chr21 - March 13", ylim = c(0,5), ylab = "LOD score")
+plot(chr21s1, main = "chr21 - May 2021", ylim = c(0,5), ylab = "LOD score")
 for (i in 1:length(phenos)) plot(chr21s1, add = T, lodcolumn = i, col = pal[i])
 add.threshold(out = chr21s1, perms = perms, alpha = 0.05, col = pal[1], lty = 2, lodcolumn = 1)
 add.threshold(out = chr21s1, perms = perms, alpha = 0.05, col = pal[2], lty = 2, lodcolumn = 2)
 add.threshold(out = chr21s1, perms = perms, alpha = 0.05, col = pal[3], lty = 2, lodcolumn = 3)
 add.threshold(out = chr21s1, perms = perms, alpha = 0.05, col = pal[4], lty = 2, lodcolumn = 4)
-add.threshold(out = chr21s1, perms = perms, alpha = 0.05, col = pal[5], lty = 2, lodcolumn = 5)
 dev.off()
-
-mod <- pullSigQTL(chr21, pheno.col = c(2:7), s1.output = chr21s1, perm.output = perms, returnQTLModel = F, alpha = 0.05)
-cis21 <- calcCis(chr21, s1.output = chr21s1, perm.output = perms)
