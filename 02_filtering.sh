@@ -1,4 +1,4 @@
-# SJSW 2018
+# SJSW 2021
 # Note: currently quite clunky, would be better optomized with for loops
 
 #conda create -n phd -c bioconda plink vcftools htslib bcftools rename
