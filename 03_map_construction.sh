@@ -1,4 +1,4 @@
-# SJSW 2019
+# SJSW 2021
 # Note: currently quite clunky and repetitive, would be better optomized with for loops
 
 source activate phd
@@ -49,4 +49,38 @@ do
 done
 
 
+# transfer *.geno and may2021_chr1.call (or any of the chr call files) files to local machine, manipulate in Excel to prep for R/qtl load
+
+# Manual prep steps
+
+## create your header - this will be put into every chr geno matrix
+# copy row 3 of may2021_chr1.call and insert above geno contents in Excel, starting at the second column - this is your indv header
+# label first column 'marker'
+# remove all WT and F1 indvs from the header row
+
+## prep a chromosome geno matrix
+# open chr ordered geno file, copy everything, and paste into Excel
+# delete fourth column (duplicated sex-averaged position)
+# replace all values in second column with chr number (e.g. 1)
+# insert header above matrix
+# find & replace all values in the matrix as: 
+#			1 1 = AA
+#			1 2 = AB
+#			2 1 = BA
+#			2 2 = BB
+#
+# Alternatively, you can replace 11 with A and 22 with B, leaving 12 and 21 to be replaced with H - depends on the crossing scheme used to produce the F2s. It's easiest if you select the 'match case' and 'find entire cells only' options in the find & replace menu to make sure you're not getting spurious replacements in other labels (e.g. sample names)
+#
+# Then, copy the entire matrix, add another sheet, right click on the top cell of the sheet, paste special -> transpose
+#
+# remove 'marker', 'CHR', and 'POS' in column 1
+# insert as many columns as you need for phenotypes between the first field (indv) and the first marker/chr/pos field
+# delete sheet 1 (so it doesn't get read by R when you load the data)
+# save as CSV for easier loading with read.cross
+
+# split full geno matrices for all families into family-specific files
+
+
+
+### repeat for Hotel from /n/holyscratch01/informatics/swuitchik/gasAcu/lepmap/hotel
 
