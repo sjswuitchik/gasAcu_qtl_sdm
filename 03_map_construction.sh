@@ -68,7 +68,13 @@ done
 #			1 2 = AB
 #			2 1 = BA
 #			2 2 = BB
+# or 
+#			1 1 = AC
+#			1 2 = BC
+#			2 1 = AD
+#			2 2 = BD
 #
+# (depending on cross type)
 # Alternatively, you can replace 11 with A and 22 with B, leaving 12 and 21 to be replaced with H - depends on the crossing scheme used to produce the F2s. It's easiest if you select the 'match case' and 'find entire cells only' options in the find & replace menu to make sure you're not getting spurious replacements in other labels (e.g. sample names)
 #
 # Then, copy the entire matrix, add another sheet, right click on the top cell of the sheet, paste special -> transpose
