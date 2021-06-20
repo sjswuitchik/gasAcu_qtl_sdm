@@ -14,15 +14,15 @@ t<-ncvar_get(SST,"time")
 Temp.array<-ncvar_get(SST,"sst")
 dim(Temp.array)
 
-tol.lb<-0.9
-tol.ub<-31.9
+tol.lb<-1.8
+tol.ub<-30.1
 errat.lb<-5
 errat.ub<-25
 pref.lb<-13.6
 pref.ub<-19.9
 
 #Warmer world - evolution of traits
-evol.tol.lb <- tol.lb - 0.9
+evol.tol.lb <- tol.lb - 1.8
 evol.tol.ub <- tol.ub + 2.5
 evol.errat.lb <- errat.lb - 2.5
 evol.errat.ub <- errat.ub + 2.5
@@ -283,10 +283,10 @@ extent(TOL)<-extent(ERRAT)<-extent(PREF)<-extent(COMBOTE)<-extent(temp.min)
 extent(TOLW)<-extent(ERRATW)<-extent(COMBOTEW)<-extent(temp.min25WARMED)
 
 #Save rasters (use ",overwrite=TRUE" to overwrite files, not in code to avoid accidents)
-writeRaster(TOL,"Processed_files/TOL_Nov3_rcp8_evol.asc",format="ascii")
-writeRaster(ERRAT,"Processed_files/ERRAT_Nov3_rcp8_evol.asc",format="ascii")
-writeRaster(PREF,"Processed_files/PREF_Nov3_rcp8_evol.asc",format="ascii")
-writeRaster(COMBOTE,"Processed_files/COMBOTE_Nov3_rcp8_evol.asc",format="ascii")
-writeRaster(TOLW,"Processed_files/TOLW_Nov3_rcp8_evol.asc",format="ascii")
-writeRaster(ERRATW,"Processed_files/ERRATW_Nov3_rcp8_evol.asc",format="ascii")
-writeRaster(COMBOTEW,"Processed_files/COMBO_TOL_E_W_Nov3_rcp8_evol.asc",format="ascii")
+writeRaster(TOL,"Processed_files/TOL_June20_rcp8_evol.asc",format="ascii")
+writeRaster(ERRAT,"Processed_files/ERRAT_June20_rcp8_evol.asc",format="ascii")
+writeRaster(PREF,"Processed_files/PREF_June20_rcp8_evol.asc",format="ascii")
+writeRaster(COMBOTE,"Processed_files/COMBOTE_June20_rcp8_evol.asc",format="ascii")
+writeRaster(TOLW,"Processed_files/TOLW_June20_rcp8_evol.asc",format="ascii")
+writeRaster(ERRATW,"Processed_files/ERRATW_June20_rcp8_evol.asc",format="ascii")
+writeRaster(COMBOTEW,"Processed_files/COMBO_TOL_E_W_June20_rcp8_evol.asc",format="ascii")
