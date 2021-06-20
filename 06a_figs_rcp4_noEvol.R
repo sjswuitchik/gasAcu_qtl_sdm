@@ -58,7 +58,7 @@ A<-raster("SaraUseThis.tif")
 
 #Plot-Current World
 viridis <- viridis_pal(direction = 1, option = "C")
-cols <- viridisLite::viridis(5)
+cols <- viridisLite::viridis(3)
 ltext<-c("Outside Physiol Limits","Within Physiol Limits","Normal Behav") #legend text
 pdf("Figs/rcp4_noevol_current.pdf")
 plot(D, col="grey",axes=F,legend=F)
@@ -74,10 +74,11 @@ legend("bottomleft",legend=ltext,fill=cols,bg="white")
 dev.off()
 
 # Plot - Bathy/sea ice current + warmer
+cols <- viridisLite::viridis(2)
 lstext <- c("Suitable Habitat Warmer", "Suitable Habitat Current")
 pdf("Figs/suitable_combo.pdf")
 plot(D,col="grey",axes=F,legend=F)
 plot(B,add=T,col=cols[4],axes=F,legend=F)
 plot(A,add=T,col=cols[5],axes=F)
-legend("bottomleft",legend=lstext,fill=cols[4:5],bg="white")
+legend("bottomleft",legend=lstext,fill=cols,bg="white")
 dev.off()
