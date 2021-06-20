@@ -1,4 +1,4 @@
-# SM & SJSW 2019-20
+# SM & SJSW 2019-21
 #Make Figures for the distribution data
 
 ###########################################################################################################################
@@ -58,7 +58,7 @@ A<-raster("SaraUseThis.tif")
 
 # set up plot parameters
 viridis <- viridis_pal(direction = 1, option = "C")
-cols <- viridisLite::viridis(5)
+cols <- viridisLite::viridis(3)
 ltext<-c("Outside Physiol Limits","Within Physiol Limits","Normal Behav") #legend text
 
 #Plot-Warmer World
