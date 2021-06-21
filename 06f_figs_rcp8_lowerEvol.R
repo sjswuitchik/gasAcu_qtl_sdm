@@ -41,7 +41,7 @@ B<-D
 #Alter raster for plotting
 D[D<0]<-NA #Remove all cells below sea level (i.e. land remains)
 D[D>=0]<-1 #Give all cells above sea level the same value
-Dp <- rasterToPolygons(D)
+#Dp <- rasterToPolygons(D)
 
 #Create cells for bathy where stickelback cannot persist
 B[B>0]<-NA #Remove all cells above sea level (i.e. on sea remains)
@@ -63,7 +63,7 @@ ltext<-c("Outside Physiol Limits","Within Physiol Limits","Normal Behav") #legen
 
 #Plot-Warmer World
 pdf("Figs/rcp8_lowerEvol_warmer.pdf")
-plot(Dp, col="grey",axes=F,legend=F)
+plot(D, col="grey",axes=F,legend=F)
 plot(COMBOTEWARM, add=T, legend=F, at=c(2,3),col=cols[2:3])
 legend("bottomleft",legend=ltext,fill=cols,bg="white")
 dev.off()
