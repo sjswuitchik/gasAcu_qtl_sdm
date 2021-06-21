@@ -16,7 +16,6 @@ library(viridis)
 ###########################################################################################################################
 
 #Load raster of combined tolerance and erratic behaviour
-COMBOTE<-raster("Processed_files/COMBOTE_June20_rcp8_evol.asc")
 COMBOTEWARM<-raster("Processed_files/COMBO_TOL_E_W_June20_rcp8_evol.asc")
 
 #Load bathymetry to get coastlines (nc file)
