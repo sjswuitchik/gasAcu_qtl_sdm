@@ -27,7 +27,7 @@ pref.ub<-19.9
 evol.tol.lb <- tol.lb 
 evol.tol.ub <- tol.ub + 1.13
 evol.errat.lb <- errat.lb 
-evol.errat.ub <- errat.ub 
+evol.errat.ub <- errat.ub + 1.13
 evol.pref.lb <- pref.lb
 evol.pref.ub <- pref.ub
 
