@@ -24,10 +24,10 @@ pref.lb<-13.6
 pref.ub<-19.9
 
 #Warmer world - evolution of traits
-evol.tol.lb <- tol.lb - 2.08
-evol.tol.ub <- tol.ub 
-evol.errat.lb <- errat.lb - 2.08
-evol.errat.ub <- errat.ub 
+evol.tol.lb <- tol.lb 
+evol.tol.ub <- tol.ub + 2.08
+evol.errat.lb <- errat.lb 
+evol.errat.ub <- errat.ub + 2.08
 evol.pref.lb <- pref.lb
 evol.pref.ub <- pref.ub
 
