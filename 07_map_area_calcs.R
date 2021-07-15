@@ -138,7 +138,7 @@ area(poly.r4NW)/area(poly.r4NC)
 #### Comparison 6: RCP 8.5 current vs no evol warmer (r8NW/r4NC) ####
 area(poly.r8NW)/area(poly.r4NC)
 
-#### Comparisons with new QTL data - July 2021 ####
+#### Areas with new QTL data - July 2021 ####
 r4min3[r4min3!=3]<-NA
 pdf("r4min3.pdf")
 plot(r4min3)
