@@ -25,6 +25,12 @@ r8NW<-raster("COMBO_TOL_E_W_June20_rcp8_noEvol.asc")
 proj4string(r8NW)<-CRS("+init=epsg:4326")
 r8EW<-raster("COMBO_TOL_E_W_June20_rcp8_lowerEvol.asc")
 proj4string(r8EW)<-CRS("+init=epsg:4326")
+r4min3
+r4min21
+r4max21
+r4max12
+
+
 #r4EWadjPVE<-raster("COMBO_TOL_E_W_Nov30_rcp4_adjPVE_minOnly.asc")
 #proj4string(r4EWadjPVE)<-CRS("+init=epsg:4326")
 #r8EWadjPVE<-raster("COMBO_TOL_E_W_Nov30_rcp8_adjPVE_minOnly.asc")
