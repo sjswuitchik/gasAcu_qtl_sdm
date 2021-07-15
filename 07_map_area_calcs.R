@@ -25,11 +25,14 @@ r8NW<-raster("COMBO_TOL_E_W_June20_rcp8_noEvol.asc")
 proj4string(r8NW)<-CRS("+init=epsg:4326")
 r8EW<-raster("COMBO_TOL_E_W_June20_rcp8_lowerEvol.asc")
 proj4string(r8EW)<-CRS("+init=epsg:4326")
-r4min3
-r4min21
-r4max21
-r4max12
-
+r4min3<-raster("COMBOTE_TOL_E_W_Jul14_rcp4_adjPVE_minLG3.asc")
+proj4string(r4min3)<-CRS("+init=epsg:4326")
+r4min21<-raster("COMBO_TOL_E_W_Jul14_rcp4_adjPVE_minLG21.asc")
+proj4string(r4min21)<-CRS("+init=epsg:4326")
+r4max21<-raster("COMBO_TOL_E_W_Jul14_rcp4_adjPVE_maxLG21.asc")
+proj4string(r4max21)<-CRS("+init=epsg:4326")
+r4max12<-raster("COMBO_TOL_E_W_Jul14_rcp4_adjPVE_maxLG12.asc")
+proj4string(r4max12)<-CRS("+init=epsg:4326")
 
 #r4EWadjPVE<-raster("COMBO_TOL_E_W_Nov30_rcp4_adjPVE_minOnly.asc")
 #proj4string(r4EWadjPVE)<-CRS("+init=epsg:4326")
@@ -134,6 +137,45 @@ area(poly.r4NW)/area(poly.r4NC)
 
 #### Comparison 6: RCP 8.5 current vs no evol warmer (r8NW/r4NC) ####
 area(poly.r8NW)/area(poly.r4NC)
+
+#### Comparisons with new QTL data - July 2021 ####
+r4min3[r4min3!=3]<-NA
+pdf("r4min3.pdf")
+plot(r4min3)
+dev.off()
+
+r4min21[r4min21!=3]<-NA
+pdf("r4min21.pdf")
+plot(r4min21)
+dev.off()
+
+r4max21[r4max21!=3]<-NA
+pdf("r4max21.pdf")
+plot(r4max21)
+dev.off()
+
+r4max12[r4max12!=3]<-NA
+pdf("r4max12.pdf")
+plot(r4max12)
+dev.off()
+
+# Change projection to an equal area projection (useable for areas N of 45 lat)
+proj4string(r4min3)<-CRS("+init=epsg:3572") 
+proj4string(r4min21)<-CRS("+init=epsg:3572")
+proj4string(r4max21)<-CRS("+init=epsg:3572")
+proj4string(r4max12)<-CRS("+init=epsg:3572")
+
+# Convert to polygon
+poly.r4min3<-rasterToPolygons(r4min3,na.rm=TRUE,dissolve=TRUE)
+poly.r4min21<-rasterToPolygons(r4min21,na.rm=TRUE,dissolve=TRUE)
+poly.r4max21<-rasterToPolygons(r4max21,na.rm=TRUE,dissolve=TRUE)
+poly.r4max12<-rasterToPolygons(r4max12,na.rm=TRUE,dissolve=TRUE)
+
+# Area calcs
+area(poly.r4min3)
+area(poly.r4min21)
+area(poly.r4max21)
+area(poly.r4max12)
 
 ##### Comparison 7: RCP 4.5 evol warmer vs adj PVE evol warmer (r4EW/r4EWadjPVE) ####
 #
