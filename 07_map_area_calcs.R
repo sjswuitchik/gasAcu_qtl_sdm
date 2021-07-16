@@ -33,6 +33,10 @@ r4max21<-raster("COMBO_TOL_E_W_Jul14_rcp4_adjPVE_maxLG21.asc")
 proj4string(r4max21)<-CRS("+init=epsg:4326")
 r4max12<-raster("COMBO_TOL_E_W_Jul14_rcp4_adjPVE_maxLG12.asc")
 proj4string(r4max12)<-CRS("+init=epsg:4326")
+r8min3<-raster("COMBO_TOL_E_W_Jul14_rcp8_adjPVE_minLG3.asc")
+proj4string(r8min3)<-CRS("+init=epsg:4326")
+r8min21<-raster("COMBO_TOL_E_W_Jul14_rcp8_adjPVE_minLG21.asc")
+proj4string(r8min21)<-CRS("+init=epsg:4326")
 
 #r4EWadjPVE<-raster("COMBO_TOL_E_W_Nov30_rcp4_adjPVE_minOnly.asc")
 #proj4string(r4EWadjPVE)<-CRS("+init=epsg:4326")
@@ -159,23 +163,39 @@ pdf("r4max12.pdf")
 plot(r4max12)
 dev.off()
 
+r8min3[r8min3!=3]<-NA
+pdf("r8min3.pdf")
+plot(r8min3)
+dev.off()
+
+r8min21[r8min21!=3]<-NA
+pdf("r8min21.pdf")
+plot(r8min21)
+dev.off()
+
 # Change projection to an equal area projection (useable for areas N of 45 lat)
 proj4string(r4min3)<-CRS("+init=epsg:3572") 
 proj4string(r4min21)<-CRS("+init=epsg:3572")
 proj4string(r4max21)<-CRS("+init=epsg:3572")
 proj4string(r4max12)<-CRS("+init=epsg:3572")
+proj4string(r8min3)<-CRS("+init=epsg:3572") 
+proj4string(r8min21)<-CRS("+init=epsg:3572")
 
 # Convert to polygon
 poly.r4min3<-rasterToPolygons(r4min3,na.rm=TRUE,dissolve=TRUE)
 poly.r4min21<-rasterToPolygons(r4min21,na.rm=TRUE,dissolve=TRUE)
 poly.r4max21<-rasterToPolygons(r4max21,na.rm=TRUE,dissolve=TRUE)
 poly.r4max12<-rasterToPolygons(r4max12,na.rm=TRUE,dissolve=TRUE)
+poly.r8min3<-rasterToPolygons(r8min3,na.rm=TRUE,dissolve=TRUE)
+poly.r8min21<-rasterToPolygons(r8min21,na.rm=TRUE,dissolve=TRUE)
 
 # Area calcs
 area(poly.r4min3)
 area(poly.r4min21)
 area(poly.r4max21)
 area(poly.r4max12)
+area(poly.r8min3)
+area(poly.r8min21)
 
 ##### Comparison 7: RCP 4.5 evol warmer vs adj PVE evol warmer (r4EW/r4EWadjPVE) ####
 #
