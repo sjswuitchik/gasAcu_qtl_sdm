@@ -16,10 +16,11 @@ library(viridis)
 ###########################################################################################################################
 
 #Load raster of combined tolerance and erratic behaviour
-r4min3<-raster("Processed_files/COMBO_TOL_E_W_Jul14_rcp8_adjPVE_minLG3.asc ")
-r4min21<-raster("Processed_files/COMBO_TOL_E_W_Jul14_rcp8_adjPVE_minLG21.asc")
-r4max21<-raster("Processed_files/COMBO_TOL_E_W_Jul14_rcp8_adjPVE_maxLG21.asc")
-r4max12<-raster("Processed_files/COMBO_TOL_E_W_Jul14_rcp8_adjPVE_maxLG12.asc")
+r8min3<-raster("Processed_files/COMBO_TOL_E_W_Jul14_rcp8_adjPVE_minLG3.asc ")
+r8min21<-raster("Processed_files/COMBO_TOL_E_W_Jul14_rcp8_adjPVE_minLG21.asc")
+r8max21<-raster("Processed_files/COMBO_TOL_E_W_Jul14_rcp8_adjPVE_maxLG21.asc")
+r8max12<-raster("Processed_files/COMBO_TOL_E_W_Jul14_rcp8_adjPVE_maxLG12.asc")
+
 
 #Load bathymetry to get coastlines (nc file)
 Bathy<-nc_open("GEBCO_2014_2D_-179.7777_45.2207_-120.8539_76.3978.nc")
