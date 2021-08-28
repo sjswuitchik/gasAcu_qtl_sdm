@@ -7,6 +7,10 @@ head(suit@data)
 #Load bathymetry to get coastlines (nc file)
 Bathy<-nc_open("GEBCO_2014_2D_-179.7777_45.2207_-120.8539_76.3978.nc")
 
+#Find lat and lon of cells
+lon<-ncvar_get(Bathy,"lon")
+lat<-ncvar_get(Bathy,"lat")
+
 #Load salinity
 Sal.csv<-read.csv("~/Desktop/UCalgary_PhD/Main_publication/Coding/req_files/01 Jan.csv")
 names(Sal.csv)
