@@ -1,7 +1,7 @@
 #Let's make a salinity map! This map will have:
 
 #Only the bathymetry where stickleback can live (see model parameterization)
-#Takes into account Sea ice (but you can change that by using a diff Bathy file)
+#Takes into account sea ice (but you can change that by using a diff Bathy file)
 
 rm(list=ls(all=TRUE))
 library (ncdf4)
