@@ -1,11 +1,26 @@
+#Let's make a salinity map! This map will have:
+
+#Only the bathymetry where stickleback can live (see model parameterization)
+#Takes into account Sea ice (but you can change that by using a diff Bathy file)
+
+rm(list=ls(all=TRUE))
+library (ncdf4)
+library(raster)
+library(rgeos)
+library(sp)
+library(rgdal)
+library(maptools)
+
+
+###########################################################################################################################
 #Load shapefile of bathymetry/sea ice availability 
 suit<-readOGR("~/Desktop/UCalgary_PhD/Main_publication/Coding/req_files/Bathy&SeaIce-prefered")
 
 #Check data loaded correctly
-head(suit@data)
+#head(suit@data)
 
 #Load bathymetry to get coastlines (nc file)
-Bathy<-nc_open("GEBCO_2014_2D_-179.7777_45.2207_-120.8539_76.3978.nc")
+Bathy<-nc_open("~/Desktop/UCalgary_PhD/Main_publication/Coding/req_files/GEBCO_2014_2D_-179.7777_45.2207_-120.8539_76.3978.nc")
 
 #Find lat and lon of cells
 lon<-ncvar_get(Bathy,"lon")
@@ -36,4 +51,4 @@ D[D>=0]<-1 #Give all cells above sea level the same value
 
 #Create a plot
 plot(D, col="grey",axes=F,legend=F)
-plot(sal.rast)
+plot(sal.rast, add = T)
