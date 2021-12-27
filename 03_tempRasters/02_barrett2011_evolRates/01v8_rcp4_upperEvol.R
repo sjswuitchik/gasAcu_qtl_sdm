@@ -149,17 +149,17 @@ CellsWin8<-cellsFromExtent(temp.max25W,exwin4)
 
 #Warm the min temps
 temp.min25WARMED<-temp.min25W #Create new raster for warmed
-temp.min25WARMED[CellsWin1]<-temp.min25W[CellsWin1]+3 #Warm it by relevant amounts for RCP 8.5, for the diff. extents
-temp.min25WARMED[CellsWin2]<-temp.min25W[CellsWin2]+3.6 
-temp.min25WARMED[CellsWin3]<-temp.min25W[CellsWin3]+3 
-temp.min25WARMED[CellsWin4]<-temp.min25W[CellsWin4]+2.8 
+temp.min25WARMED[CellsWin1]<-temp.min25W[CellsWin1]+2 #Warm it by relevant amounts for RCP 4.5, for the diff. extents
+temp.min25WARMED[CellsWin2]<-temp.min25W[CellsWin2]+2.4 
+temp.min25WARMED[CellsWin3]<-temp.min25W[CellsWin3]+1.8 
+temp.min25WARMED[CellsWin4]<-temp.min25W[CellsWin4]+1.6 
 
 #Warm the max temps
 temp.max25WARMED<-temp.max25W #Create new raster
-temp.max25WARMED[CellsWin5]<-temp.max25W[CellsWin5]+3 #Warm it by relevant amounts for RCP 8.5, for the diff. extents
-temp.max25WARMED[CellsWin6]<-temp.max25W[CellsWin6]+3.6 
-temp.max25WARMED[CellsWin7]<-temp.max25W[CellsWin7]+3 
-temp.max25WARMED[CellsWin8]<-temp.max25W[CellsWin8]+2.8 
+temp.max25WARMED[CellsWin5]<-temp.max25W[CellsWin5]+2 #Warm it by relevant amounts for RCP 4.5, for the diff. extents
+temp.max25WARMED[CellsWin6]<-temp.max25W[CellsWin6]+2.4 
+temp.max25WARMED[CellsWin7]<-temp.max25W[CellsWin7]+1.8 
+temp.max25WARMED[CellsWin8]<-temp.max25W[CellsWin8]+1.6 
 
 tol<-errat<-pref<-matrix(NA,nrow=dim(temp.max)[1],ncol=dim(temp.max)[2])
 m<-1
