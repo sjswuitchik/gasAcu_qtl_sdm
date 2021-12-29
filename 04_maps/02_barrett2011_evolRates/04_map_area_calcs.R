@@ -42,6 +42,12 @@ proj4string(r8max21)<-CRS("+init=epsg:4326")
 r8max12<-raster("COMBO_TOL_E_W_Jul14_rcp8_adjPVE_maxLG12.asc")
 proj4string(r8max12)<-CRS("+init=epsg:4326")
 
+## New rasters for Dec 2021 revisions
+r4minMaxEW <- raster("COMBO_TOL_E_W_dec2021_rcp4_lowerUpperEvol.asc")
+proj4string(r4minMaxEW) <- CRS("+init=epsg:4326")
+r8minMaxEW <- raster("COMBO_TOL_E_W_dec2021_rcp8_lowerUpperEvol.asc")
+proj4string(r8minMaxEW) <- CRS("+init=epsg:4326")
+
 # Find the raster values
 unique(r4NC)
 
@@ -207,4 +213,31 @@ area(poly.r8min3)
 area(poly.r8min21)
 area(poly.r8max21)
 area(poly.r8max12)
+
+## New mdoels for Dec 2021 revisions
+# r4minMaxEW
+# r8minMaxEW
+
+r4minMaxEW[r4minMaxEW!=3]<-NA
+pdf("r4minMaxEW.pdf")
+plot(r4minMaxEW)
+dev.off()
+
+proj4string(r4minMaxEW)<-CRS("+init=epsg:3572") 
+
+poly.r4minMaxEW<-rasterToPolygons(r4minMaxEW,na.rm=TRUE,dissolve=TRUE)
+
+r8minMaxEW[r8minMaxEW!=3]<-NA
+pdf("r8minMaxEW.pdf")
+plot(r8minMaxEW)
+dev.off()
+
+proj4string(r8minMaxEW)<-CRS("+init=epsg:3572") 
+
+poly.r8minMaxEW<-rasterToPolygons(r8minMaxEW,na.rm=TRUE,dissolve=TRUE)
+
+area(r4minMaxEW)
+area(r8minMaxEW)
+
+
 
