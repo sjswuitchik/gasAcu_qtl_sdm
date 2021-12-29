@@ -234,7 +234,7 @@ proj4string(r8minMaxEW)<-CRS("+init=epsg:3572")
 
 poly.r8minMaxEW<-rasterToPolygons(r8minMaxEW,na.rm=TRUE,dissolve=TRUE)
 
-area(r4minMaxEW)
-area(r8minMaxEW)
+area(poly.r4minMaxEW)
+area(poly.r8minMaxEW)
 
 
