@@ -16,7 +16,7 @@ library(viridis)
 ###########################################################################################################################
 
 #Load raster of combined tolerance and erratic behaviour
-r8min3<-raster("Processed_files/CCOMBO_TOL_E_W_dec2021_rcp8_adjPVE_minLG03_sanderson.asc")
+r8min3<-raster("Processed_files/COMBO_TOL_E_W_dec2021_rcp8_adjPVE_minLG03_sanderson.asc")
 r8min21<-raster("Processed_files/COMBO_TOL_E_W_dec2021_rcp8_adjPVE_minLG21_sanderson.asc")
 r8max21<-raster("Processed_files/COMBO_TOL_E_W_dec2021_rcp8_adjPVE_maxLG21_sanderson.asc")
 r8max12<-raster("Processed_files/COMBO_TOL_E_W_dec2021_rcp8_adjPVE_maxLG12_sanderson.asc")
