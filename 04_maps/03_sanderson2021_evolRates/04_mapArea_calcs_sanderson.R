@@ -1,4 +1,4 @@
-# SM & SJSW 2020
+# SM & SJSW 2020-22
 # Calculate areas from the map rasters (in proportions)
 
 ###########################################################################################################################
@@ -19,34 +19,38 @@ r4NC<-raster("COMBOTE_June20_rcp4_noEvol.asc")
 proj4string(r4NC)<-CRS("+init=epsg:4326")
 r4NW<-raster("COMBO_TOL_E_W_June20_rcp4_noEvol.asc")
 proj4string(r4NW)<-CRS("+init=epsg:4326")
-r4EW<-raster("COMBO_TOL_E_W_June20_rcp4_lowerEvol.asc")
+r4EW<-raster("COMBO_TOL_E_W_dec2021_rcp4_lowerEvol_sanderson.asc")
 proj4string(r4EW)<-CRS("+init=epsg:4326")
 r8NW<-raster("COMBO_TOL_E_W_June20_rcp8_noEvol.asc")
 proj4string(r8NW)<-CRS("+init=epsg:4326")
-r8EW<-raster("COMBO_TOL_E_W_June20_rcp8_lowerEvol.asc")
+r8EW<-raster("COMBO_TOL_E_W_dec2021_rcp8_lowerEvol_sanderson.asc")
 proj4string(r8EW)<-CRS("+init=epsg:4326")
-r4min3<-raster("COMBO_TOL_E_W_Jul14_rcp4_adjPVE_minLG3.asc")
+r4min3<-raster("COMBO_TOL_E_W_dec2021_rcp4_adjPVE_minLG03_sanderson.asc")
 proj4string(r4min3)<-CRS("+init=epsg:4326")
-r4min21<-raster("COMBO_TOL_E_W_Jul14_rcp4_adjPVE_minLG21.asc")
+r4min21<-raster("COMBO_TOL_E_W_dec2021_rcp4_adjPVE_minLG21_sanderson.asc")
 proj4string(r4min21)<-CRS("+init=epsg:4326")
-r4max21<-raster("COMBO_TOL_E_W_Jul14_rcp4_adjPVE_maxLG21.asc")
+r4max21<-raster("COMBO_TOL_E_W_dec2021_rcp4_adjPVE_maxLG21_sanderson.asc")
 proj4string(r4max21)<-CRS("+init=epsg:4326")
-r4max12<-raster("COMBO_TOL_E_W_Jul14_rcp4_adjPVE_maxLG12.asc")
+r4max12<-raster("COMBO_TOL_E_W_dec2021_rcp4_adjPVE_maxLG12_sanderson.asc")
 proj4string(r4max12)<-CRS("+init=epsg:4326")
-r8min3<-raster("COMBO_TOL_E_W_Jul14_rcp8_adjPVE_minLG3.asc")
+r8min3<-raster("COMBO_TOL_E_W_dec2021_rcp8_adjPVE_minLG03_sanderson.asc")
 proj4string(r8min3)<-CRS("+init=epsg:4326")
-r8min21<-raster("COMBO_TOL_E_W_Jul14_rcp8_adjPVE_minLG21.asc")
+r8min21<-raster("COMBO_TOL_E_W_dec2021_rcp8_adjPVE_minLG21_sanderson.asc")
 proj4string(r8min21)<-CRS("+init=epsg:4326")
-r8max21<-raster("COMBO_TOL_E_W_Jul14_rcp8_adjPVE_maxLG21.asc")
+r8max21<-raster("COMBO_TOL_E_W_dec2021_rcp8_adjPVE_maxLG21_sanderson.asc")
 proj4string(r8max21)<-CRS("+init=epsg:4326")
-r8max12<-raster("COMBO_TOL_E_W_Jul14_rcp8_adjPVE_maxLG12.asc")
+r8max12<-raster("COMBO_TOL_E_W_dec2021_rcp8_adjPVE_maxLG12_sanderson.asc")
 proj4string(r8max12)<-CRS("+init=epsg:4326")
+r4minMaxEW <- raster("COMBO_TOL_E_W_dec2021_rcp4_lowerUpperEvol_sanderson.asc")
+proj4string(r4minMaxEW)<-CRS("+init=epsg:4326")
+r8minMaxEW <- raster("COMBO_TOL_E_W_dec2021_rcp8_lowerUpperEvol_sanderson.asc")
+proj4string(r8minMaxEW)<-CRS("+init=epsg:4326")
 
 # Find the raster values
 unique(r4NC)
 
 # Verify what the raster values correspond to in this version (should be consistent but check it anyways)
-pdf("raw_r4NC.pdf")
+pdf("raw_r4NC_sanderson.pdf")
 plot(r4NC) 
 dev.off()
 
@@ -62,12 +66,12 @@ dev.off()
 # Replace the raster components we don't care about with NA (ie/ isolating the 'normal behaviour' envelope)
 # NB: extents are the same between rasters, so don't need to change anything
 r4NW[r4NW!=3]<-NA
-pdf("r4NW.pdf")
+pdf("r4NW_sanderson.pdf")
 plot(r4NW)
 dev.off()
 
 r4EW[r4EW!=3]<-NA
-pdf("r4EW.pdf")
+pdf("r4EW_sanderson.pdf")
 plot(r4EW)
 dev.off()
 
@@ -85,12 +89,12 @@ area(poly.r4EW)/area(poly.r4NW)
 #### Comparison 2: RCP 8.5 no evol warmer vs evol warmer (r8EW/r8NW) ####
 # NB: extents are the same
 r8NW[r8NW!=3]<-NA
-pdf("r8NW.pdf")
+pdf("r8NW_sanderson.pdf")
 plot(r8NW)
 dev.off()
 
 r8EW[r8EW!=3]<-NA
-pdf("r8EW.pdf")
+pdf("r8EW_sanderson.pdf")
 plot(r8EW)
 dev.off()
 
@@ -112,7 +116,7 @@ r4NC<-extend(r4NC,r4NW)
 
 #In the smaller raster, replace the raster components we don't care about with NA
 r4NC[r4NC!=3]<-NA
-pdf("r4NC.pdf")
+pdf("r4NC_sanderson.pdf")
 plot(r4NC)
 dev.off()
 
@@ -139,42 +143,42 @@ area(poly.r8NW)/area(poly.r4NC)
 
 #### Areas with new QTL data - July 2021 ####
 r4min3[r4min3!=3]<-NA
-pdf("r4min3.pdf")
+pdf("r4min3_sanderson.pdf")
 plot(r4min3)
 dev.off()
 
 r4min21[r4min21!=3]<-NA
-pdf("r4min21.pdf")
+pdf("r4min21_sanderson.pdf")
 plot(r4min21)
 dev.off()
 
 r4max21[r4max21!=3]<-NA
-pdf("r4max21.pdf")
+pdf("r4max21_sanderson.pdf")
 plot(r4max21)
 dev.off()
 
 r4max12[r4max12!=3]<-NA
-pdf("r4max12.pdf")
+pdf("r4max12_sanderson.pdf")
 plot(r4max12)
 dev.off()
 
 r8min3[r8min3!=3]<-NA
-pdf("r8min3.pdf")
+pdf("r8min3_sanderson.pdf")
 plot(r8min3)
 dev.off()
 
 r8min21[r8min21!=3]<-NA
-pdf("r8min21.pdf")
+pdf("r8min21_sanderson.pdf")
 plot(r8min21)
 dev.off()
 
 r8max21[r8max21!=3]<-NA
-pdf("r8max21.pdf")
+pdf("r8max21_sanderson.pdf")
 plot(r8max21)
 dev.off()
 
 r8max12[r8max12!=3]<-NA
-pdf("r8max12.pdf")
+pdf("r8max12_sanderson.pdf")
 plot(r8max12)
 dev.off()
 
@@ -207,3 +211,30 @@ area(poly.r8min3)
 area(poly.r8min21)
 area(poly.r8max21)
 area(poly.r8max12)
+
+## New mdoels for Dec 2021 revisions with Sanderson et al rates 
+# r4minMaxEW
+# r8minMaxEW
+
+r4minMaxEW[r4minMaxEW!=3]<-NA
+pdf("r4minMaxEW_sanderson.pdf")
+plot(r4minMaxEW)
+dev.off()
+
+proj4string(r4minMaxEW)<-CRS("+init=epsg:3572") 
+
+poly.r4minMaxEW<-rasterToPolygons(r4minMaxEW,na.rm=TRUE,dissolve=TRUE)
+
+r8minMaxEW[r8minMaxEW!=3]<-NA
+pdf("r8minMaxEW_sanderson.pdf")
+plot(r8minMaxEW)
+dev.off()
+
+proj4string(r8minMaxEW)<-CRS("+init=epsg:3572") 
+
+poly.r8minMaxEW<-rasterToPolygons(r8minMaxEW,na.rm=TRUE,dissolve=TRUE)
+
+area(r4minMaxEW)
+area(r8minMaxEW)
+
+
