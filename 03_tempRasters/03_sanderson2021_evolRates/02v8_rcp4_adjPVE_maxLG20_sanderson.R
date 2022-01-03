@@ -1,4 +1,4 @@
-## CTmax, adjusted PVE, LG XXI PVE 83.3%
+## CTmax, adjusted PVE, LG XX PVE 83.3%
 
 library(ncdf4)
 library(raster)
