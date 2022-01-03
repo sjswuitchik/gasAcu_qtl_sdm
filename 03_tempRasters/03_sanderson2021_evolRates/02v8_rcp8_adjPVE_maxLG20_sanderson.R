@@ -1,4 +1,4 @@
-## CTmax, adjusted PVE, LG XXI PVE 83.3%
+## CTmax, adjusted PVE, LG XX PVE 83.3%
 
 library(ncdf4)
 library(raster)
@@ -285,4 +285,4 @@ extent(TOL)<-extent(ERRAT)<-extent(PREF)<-extent(COMBOTE)<-extent(temp.min)
 extent(TOLW)<-extent(ERRATW)<-extent(COMBOTEW)<-extent(temp.min25WARMED)
 
 #Save rasters (use ",overwrite=TRUE" to overwrite files, not in code to avoid accidents)
-writeRaster(COMBOTEW,"Processed_files/COMBO_TOL_E_W_dec2021_rcp8_adjPVE_maxLG21_sanderson.asc",format="ascii",overwrite=TRUE)
+writeRaster(COMBOTEW,"Processed_files/COMBO_TOL_E_W_dec2021_rcp8_adjPVE_maxLG20_sanderson.asc",format="ascii",overwrite=TRUE)
