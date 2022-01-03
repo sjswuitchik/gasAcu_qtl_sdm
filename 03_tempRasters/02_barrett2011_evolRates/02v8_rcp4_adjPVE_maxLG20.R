@@ -1,4 +1,4 @@
-## CTmax, adjusted PVE, LG XXI PVE 83.3%
+## CTmax, adjusted PVE, LG XX PVE 83.3%
 
 library(ncdf4)
 library(raster)
@@ -285,10 +285,4 @@ extent(TOL)<-extent(ERRAT)<-extent(PREF)<-extent(COMBOTE)<-extent(temp.min)
 extent(TOLW)<-extent(ERRATW)<-extent(COMBOTEW)<-extent(temp.min25WARMED)
 
 #Save rasters (use ",overwrite=TRUE" to overwrite files, not in code to avoid accidents)
-writeRaster(TOL,"Processed_files/TOL_Jul14_rcp4_adjPVE_maxLG21.asc",format="ascii")
-writeRaster(ERRAT,"Processed_files/ERRAT_Jul14_rcp4_adjPVE_maxLG21.asc",format="ascii")
-writeRaster(PREF,"Processed_files/PREF_Jul14_rcp4_adjPVE_maxLG21.asc",format="ascii")
-writeRaster(COMBOTE,"Processed_files/COMBOTE_Jul14_rcp4_adjPVE_maxLG21.asc",format="ascii")
-writeRaster(TOLW,"Processed_files/TOLW_Jul14_rcp4_adjPVE_maxLG21.asc",format="ascii")
-writeRaster(ERRATW,"Processed_files/ERRATW_Jul14_rcp4_adjPVE_maxLG21.asc",format="ascii")
-writeRaster(COMBOTEW,"Processed_files/COMBO_TOL_E_W_Jul14_rcp4_adjPVE_maxLG21.asc",format="ascii")
+writeRaster(COMBOTEW,"Processed_files/COMBO_TOL_E_W_Jul14_rcp4_adjPVE_maxLG20.asc",format="ascii")
