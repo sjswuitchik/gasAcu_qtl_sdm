@@ -23,9 +23,9 @@ pref.ub<-19.9
 
 #Warmer world - evolution of traits
 evol.tol.lb <- tol.lb - 1.8
-evol.tol.ub <- tol.ub + 3.2
+evol.tol.ub <- tol.ub + 12.3
 evol.errat.lb <- errat.lb - 5
-evol.errat.ub <- errat.ub + 3.2
+evol.errat.ub <- errat.ub + 12.3
 evol.pref.lb <- pref.lb
 evol.pref.ub <- pref.ub
 
@@ -283,4 +283,4 @@ extent(TOL)<-extent(ERRAT)<-extent(PREF)<-extent(COMBOTE)<-extent(temp.min)
 extent(TOLW)<-extent(ERRATW)<-extent(COMBOTEW)<-extent(temp.min25WARMED)
 
 #Save rasters (use ",overwrite=TRUE" to overwrite files, not in code to avoid accidents)
-writeRaster(COMBOTEW,"Processed_files/COMBO_TOL_E_W_dec2021_rcp4_lowerUpperEvol_sanderson.asc",format="ascii")
+writeRaster(COMBOTEW,"Processed_files/COMBO_TOL_E_W_dec2021_rcp4_lowerUpperEvol_sanderson_hardBound.asc",format="ascii")
