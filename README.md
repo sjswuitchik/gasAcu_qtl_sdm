@@ -1,6 +1,6 @@
 # Threespine Stickleback SDMs with trait integration
 
-**Authors:**
+**Authors:**  
 Sara Wuitchik (Postdoctoral Fellow, Harvard University & Boston University, sjswuit@g.harvard.edu)
 
 Stephanie Mogensen (Ph.D. Candidate, University of Calgary, stephanie.mogensen@ucalgary.ca)
