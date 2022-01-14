@@ -80,7 +80,7 @@ suit<-readOGR("Bathy&SeaIce-prefered")
 
 new<-suit
 
-ff<-c(20,20)
+ff<-c(10,10)
 r.minD<-disaggregate(r.min,fact=ff)
 r.maxD<-disaggregate(r.max,fact=ff)
 r.medD<-disaggregate(r.med,fact=ff)
