@@ -82,7 +82,7 @@ suit<-readOGR("Bathy&SeaIce-prefered")
 
 new<-suit
 
-ff<-c(20,20)
+ff<-c(10,10)
 r.minD<-disaggregate(r.min,fact=ff)
 r.maxD<-disaggregate(r.max,fact=ff)
 r.medD<-disaggregate(r.med,fact=ff)
@@ -285,4 +285,4 @@ extent(TOL)<-extent(ERRAT)<-extent(PREF)<-extent(COMBOTE)<-extent(temp.min)
 extent(TOLW)<-extent(ERRATW)<-extent(COMBOTEW)<-extent(temp.min25WARMED)
 
 #Save rasters (use ",overwrite=TRUE" to overwrite files, not in code to avoid accidents)
-writeRaster(COMBOTEW,"Processed_files/COMBO_TOL_E_W_Jul14_rcp8_adjPVE_maxLG20.asc",format="ascii",overwrite=TRUE)
+writeRaster(COMBOTEW,"Processed_files/COMBO_TOL_E_W_dec2021_rcp8_adjPVE_maxLG20.asc",format="ascii",overwrite=TRUE)
