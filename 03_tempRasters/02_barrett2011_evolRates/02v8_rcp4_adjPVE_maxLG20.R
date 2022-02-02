@@ -1,4 +1,5 @@
 ## CTmax, adjusted PVE, LG XX PVE 83.3%
+rm(list=ls(all=T))
 
 library(ncdf4)
 library(raster)
@@ -7,7 +8,7 @@ library(sp)
 library(rgdal)
 library(maptools)
 
-SST<-nc_open("Temp2014.nc")
+SST<-nc_open("required_files/Temp2014.nc")
 
 lon<-ncvar_get(SST,"lon")
 lat<-ncvar_get(SST,"lat")
@@ -25,9 +26,9 @@ pref.ub<-19.9
 
 #Warmer world - evolution of traits
 evol.tol.lb <- tol.lb 
-evol.tol.ub <- tol.ub + 2.65
+evol.tol.ub <- tol.ub + 11.9
 evol.errat.lb <- errat.lb 
-evol.errat.ub <- errat.ub + 2.65
+evol.errat.ub <- errat.ub + 17
 evol.pref.lb <- pref.lb
 evol.pref.ub <- pref.ub
 
@@ -78,7 +79,7 @@ r.max25<-raster(t(MAX25),xmn=min(lon), xmx=max(lon), ymn=min(lat), ymx=max(lat))
 r.max25 <- flip(r.max25, direction='y')
 r.max25<-rotate(r.max25) #Change lat to go go from -180 to 180, not 0 to 360
 
-suit<-readOGR("Bathy&SeaIce-prefered")
+suit<-readOGR("required_files/Bathy&SeaIce-prefered")
 
 new<-suit
 
@@ -104,7 +105,7 @@ temp.min25<-crop(temp.min25,extent(new))
 temp.max25<-mask(r.max25D,new) 
 temp.max25<-crop(temp.max25,extent(new))
 
-Bathy<-nc_open("GEBCO_2014_2D_-179.7777_45.2207_-120.8539_76.3978.nc")
+Bathy<-nc_open("required_files/GEBCO_2014_2D_-179.7777_45.2207_-120.8539_76.3978.nc")
 
 lon<-ncvar_get(Bathy,"lon")
 lat<-ncvar_get(Bathy,"lat")
@@ -123,7 +124,7 @@ D[D<=0 & D>-200]<-1 #Set values in raster to all the same value
 
 D[1:1253,]<-NA #Set cells above the Northern extent to 0
 
-bathywarm<-readOGR("Warmer Bathy")
+bathywarm<-readOGR("required_files/Warmer Bathy")
 
 temp.min25W<-mask(r.max25D,bathywarm) 
 temp.min25W<-crop(temp.min25W,extent(bathywarm))
@@ -285,4 +286,4 @@ extent(TOL)<-extent(ERRAT)<-extent(PREF)<-extent(COMBOTE)<-extent(temp.min)
 extent(TOLW)<-extent(ERRATW)<-extent(COMBOTEW)<-extent(temp.min25WARMED)
 
 #Save rasters (use ",overwrite=TRUE" to overwrite files, not in code to avoid accidents)
-writeRaster(COMBOTEW,"Processed_files/COMBO_TOL_E_W_dec2021_rcp4_adjPVE_maxLG20.asc",format="ascii")
+writeRaster(COMBOTEW,"outputs/Processed_files/COMBO_TOL_E_W_jan2022_rcp4_adjPVE_maxLG20.asc",format="ascii")
