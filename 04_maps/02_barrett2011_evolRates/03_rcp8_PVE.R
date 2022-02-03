@@ -15,18 +15,18 @@ library(viridis)
 
 ###########################################################################################################################
 
+#### Barrett rates 
 #Load raster of combined tolerance and erratic behaviour
-r8min3<-raster("Processed_files/COMBO_TOL_E_W_Jul14_rcp8_adjPVE_minLG3.asc ")
-r8min21<-raster("Processed_files/COMBO_TOL_E_W_Jul14_rcp8_adjPVE_minLG21.asc")
-r8max21<-raster("Processed_files/COMBO_TOL_E_W_Jul14_rcp8_adjPVE_maxLG21.asc")
-r8max12<-raster("Processed_files/COMBO_TOL_E_W_Jul14_rcp8_adjPVE_maxLG12.asc")
-
+r8min3<-raster("outputs/Processed_files/COMBO_TOL_E_W_jan2022_rcp8_adjPVE_minLG3.asc ")
+r8min21<-raster("outputs/Processed_files/COMBO_TOL_E_W_jan2022_rcp8_adjPVE_minLG21.asc")
+r8max21<-raster("outputs/Processed_files/COMBO_TOL_E_W_jan2022_rcp8_adjPVE_maxLG21.asc")
+r8max12<-raster("outputs/Processed_files/COMBO_TOL_E_W_jan2022_rcp8_adjPVE_maxLG12.asc")
 
 #Load bathymetry to get coastlines (nc file)
-Bathy<-nc_open("GEBCO_2014_2D_-179.7777_45.2207_-120.8539_76.3978.nc")
+Bathy<-nc_open("required_files/GEBCO_2014_2D_-179.7777_45.2207_-120.8539_76.3978.nc")
 
 #Load shapefile of bathymetry/sea ice availibility Current World
-suit<-readOGR("Bathy&SeaIce-prefered")
+suit<-readOGR("required_files/Bathy&SeaIce-prefered")
 
 #Find lat and lon of cells
 lon<-ncvar_get(Bathy,"lon")
@@ -53,11 +53,17 @@ B[B<=0 & B>-200]<-1 #Set values in raster to all the same value
 
 #Set Northern extent to lat of Wales, Alaska (65.6 N)
 B[1:1253,]<-NA #Set cells above the Northern extent to 0
-A<-raster("SaraUseThis.tif")
+A<-raster("required_files/SaraUseThis.tif")
 
 #For current bathy and sea ice
 #Dissolve polygons together, to form one polygon of possible habitats
 #new<-unionSpatialPolygons(suit,rep(1,length(suit$Id)))
+
+#### Sanderson rates
+r8min3_san <-raster("outputs/Processed_files/COMBO_TOL_E_W_jan2022_rcp8_adjPVE_minLG3_sanderson.asc ")
+r8min21_san <-raster("outputs/Processed_files/COMBO_TOL_E_W_jan2022_rcp8_adjPVE_minLG21_sanderson.asc")
+r8max21_san <-raster("outputs/Processed_files/COMBO_TOL_E_W_jan2022_rcp8_adjPVE_maxLG21_sanderson.asc")
+r8max12_san <-raster("outputs/Processed_files/COMBO_TOL_E_W_jan2022_rcp8_adjPVE_maxLG12_sanderson.asc")
 
 # set up plot parameters
 
@@ -65,27 +71,52 @@ viridis <- viridis_pal(direction = 1, option = "C")
 cols <- viridisLite::viridis(3)
 ltext<-c("Outside Physiol Limits","Within Physiol Limits","Normal Behav") #legend text
 
-#Plot-Warmer World
-pdf("Figs/rcp8_minLG3_warmer.pdf")
+#Plot-Warmer World Barrett
+pdf("outputs/Figs/rcp8_minLG3_warmer.pdf")
 plot(D, col="grey",axes=F,legend=F)
 plot(r8min3, add=T, legend=F, at=c(2,3),col=cols[2:3])
 legend("bottomleft",legend=ltext,fill=cols,bg="white")
 dev.off()
 
-pdf("Figs/rcp8_minLG21_warmer.pdf")
+pdf("outputs/Figs/rcp8_minLG21_warmer.pdf")
 plot(D, col="grey",axes=F,legend=F)
 plot(r8min21, add=T, legend=F, at=c(2,3),col=cols[2:3])
 legend("bottomleft",legend=ltext,fill=cols,bg="white")
 dev.off()
 
-pdf("Figs/rcp8_maxLG21_warmer.pdf")
+pdf("outputs/Figs/rcp8_maxLG21_warmer.pdf")
 plot(D, col="grey",axes=F,legend=F)
 plot(r8max21, add=T, legend=F, at=c(2,3),col=cols[2:3])
 legend("bottomleft",legend=ltext,fill=cols,bg="white")
 dev.off()
 
-pdf("Figs/rcp8_maxLG12_warmer.pdf")
+pdf("outputs/Figs/rcp8_maxLG12_warmer.pdf")
 plot(D, col="grey",axes=F,legend=F)
 plot(r8max12, add=T, legend=F, at=c(2,3),col=cols[2:3])
+legend("bottomleft",legend=ltext,fill=cols,bg="white")
+dev.off()
+
+#Plot-Warmer World Sanderson
+pdf("outputs/Figs/rcp8_minLG3_warmer_sanderson.pdf")
+plot(D, col="grey",axes=F,legend=F)
+plot(r8min3_san, add=T, legend=F, at=c(2,3),col=cols[2:3])
+legend("bottomleft",legend=ltext,fill=cols,bg="white")
+dev.off()
+
+pdf("outputs/Figs/rcp8_minLG21_warmer_sanderson.pdf")
+plot(D, col="grey",axes=F,legend=F)
+plot(r8min21_san, add=T, legend=F, at=c(2,3),col=cols[2:3])
+legend("bottomleft",legend=ltext,fill=cols,bg="white")
+dev.off()
+
+pdf("outputs/Figs/rcp8_maxLG21_warmer_sanderson.pdf")
+plot(D, col="grey",axes=F,legend=F)
+plot(r8max21_san, add=T, legend=F, at=c(2,3),col=cols[2:3])
+legend("bottomleft",legend=ltext,fill=cols,bg="white")
+dev.off()
+
+pdf("outputs/Figs/rcp8_maxLG12_warmer_sanderson.pdf")
+plot(D, col="grey",axes=F,legend=F)
+plot(r8max12_san, add=T, legend=F, at=c(2,3),col=cols[2:3])
 legend("bottomleft",legend=ltext,fill=cols,bg="white")
 dev.off()
