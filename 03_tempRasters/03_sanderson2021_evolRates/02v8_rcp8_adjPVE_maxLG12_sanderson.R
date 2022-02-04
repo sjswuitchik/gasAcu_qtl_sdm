@@ -286,4 +286,4 @@ extent(TOL)<-extent(ERRAT)<-extent(PREF)<-extent(COMBOTE)<-extent(temp.min)
 extent(TOLW)<-extent(ERRATW)<-extent(COMBOTEW)<-extent(temp.min25WARMED)
 
 #Save rasters (use ",overwrite=TRUE" to overwrite files, not in code to avoid accidents)
-writeRaster(COMBOTEW,"outputs/Processed_files/COMBO_TOL_E_W_jan2022_rcp8_adjPVE_maxLG12_sanderson.asc",format="ascii",overwrite=TRUE)
+writeRaster(COMBOTEW,"outputs/Processed_files/COMBO_TOL_E_W_jan2022_rcp8_adjPVE_maxLG12_sanderson.asc",format="ascii", overwrite=TRUE)
