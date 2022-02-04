@@ -1,3 +1,5 @@
+rm(list=ls(all=T))
+
 library (ncdf4)
 library(raster)
 library(rgeos)
@@ -5,14 +7,13 @@ library(sp)
 library(rgdal)
 library(maptools)
 
-SST<-nc_open("Temp2014.nc")
+SST<-nc_open("required_files/Temp2014.nc")
 
 lon<-ncvar_get(SST,"lon")
 lat<-ncvar_get(SST,"lat")
 t<-ncvar_get(SST,"time")
 
 Temp.array<-ncvar_get(SST,"sst")
-dim(Temp.array)
 
 tol.lb<-1.8
 tol.ub<-30.1
@@ -68,7 +69,7 @@ r.max25<-raster(t(MAX25),xmn=min(lon), xmx=max(lon), ymn=min(lat), ymx=max(lat))
 r.max25 <- flip(r.max25, direction='y')
 r.max25<-rotate(r.max25) #Change lat to go go from -180 to 180, not 0 to 360
 
-suit<-readOGR("Bathy&SeaIce-prefered")
+suit<-readOGR("required_files/Bathy&SeaIce-prefered")
 
 new<-suit
 
@@ -94,7 +95,7 @@ temp.min25<-crop(temp.min25,extent(new))
 temp.max25<-mask(r.max25D,new) 
 temp.max25<-crop(temp.max25,extent(new))
 
-Bathy<-nc_open("GEBCO_2014_2D_-179.7777_45.2207_-120.8539_76.3978.nc")
+Bathy<-nc_open("required_files/GEBCO_2014_2D_-179.7777_45.2207_-120.8539_76.3978.nc")
 
 lon<-ncvar_get(Bathy,"lon")
 lat<-ncvar_get(Bathy,"lat")
@@ -113,7 +114,7 @@ D[D<=0 & D>-200]<-1 #Set values in raster to all the same value
 
 D[1:1253,]<-NA #Set cells above the Northern extent to 0
 
-bathywarm<-readOGR("Warmer Bathy")
+bathywarm<-readOGR("required_files/Warmer Bathy")
 
 temp.min25W<-mask(r.max25D,bathywarm) 
 temp.min25W<-crop(temp.min25W,extent(bathywarm))
@@ -275,10 +276,5 @@ extent(TOL)<-extent(ERRAT)<-extent(PREF)<-extent(COMBOTE)<-extent(temp.min)
 extent(TOLW)<-extent(ERRATW)<-extent(COMBOTEW)<-extent(temp.min25WARMED)
 
 #Save rasters (use ",overwrite=TRUE" to overwrite files, not in code to avoid accidents)
-writeRaster(TOL,"Processed_files/TOL_June20_rcp4_noEvol.asc",format="ascii")
-writeRaster(ERRAT,"Processed_files/ERRAT_June20_rcp4_noEvol.asc",format="ascii")
-writeRaster(PREF,"Processed_files/PREF_June20_rcp4_noEvol.asc",format="ascii")
-writeRaster(COMBOTE,"Processed_files/COMBOTE_June20_rcp4_noEvol.asc",format="ascii")
-writeRaster(TOLW,"Processed_files/TOLW_June20_rcp4_noEvol.asc",format="ascii")
-writeRaster(ERRATW,"Processed_files/ERRATW_June20_rcp4_noEvol.asc",format="ascii")
-writeRaster(COMBOTEW,"Processed_files/COMBO_TOL_E_W_June20_rcp4_noEvol.asc",format="ascii")
+writeRaster(COMBOTE,"outputs/Processed_files/COMBOTE_jan2022_rcp4_noEvol.asc",format="ascii")
+writeRaster(COMBOTEW,"outputs/Processed_files/COMBO_TOL_E_W_jan2022_rcp4_noEvol.asc",format="ascii")
