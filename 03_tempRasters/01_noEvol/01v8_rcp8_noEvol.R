@@ -1,4 +1,4 @@
-rm(list=all(T))
+rm(list=ls(all=T))
 
 library(ncdf4)
 library(raster)
@@ -14,7 +14,6 @@ lat<-ncvar_get(SST,"lat")
 t<-ncvar_get(SST,"time")
 
 Temp.array<-ncvar_get(SST,"sst")
-dim(Temp.array)
 
 tol.lb<-1.8
 tol.ub<-30.1
