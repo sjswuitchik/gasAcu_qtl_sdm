@@ -1,4 +1,4 @@
-# SM & SJSW 2020
+# SM & SJSW 2020-22
 # Calculate areas from the map rasters 
 
 ###########################################################################################################################
@@ -69,13 +69,10 @@ dev.off()
 
 ## order of operations
 # Replace the raster components we don't care about with NA (ie/ isolating the 'normal behaviour' envelope)
-# change extents (if necessary)
-# change to equal area projection (useable for areas N of 45 lat)
+# change to equal area projection (usable for areas N of 45 lat)
 # convert to polygon
 # calculate area of polygon
 
-
-# NB: extents are the same between rasters, so don't need to change anything
 r4NW[r4NW!=3]<-NA
 pdf("outputs/Figs/r4NW.pdf")
 plot(r4NW)
@@ -97,8 +94,6 @@ poly.r4EW<-rasterToPolygons(r4EW,na.rm=TRUE,dissolve=TRUE)
 # Areas 
 area(poly.r4EW) # 193.9766
 area(poly.r4NW) # 152.5273
-
-# NB: extents are the same
 
 r8NW[r8NW!=3]<-NA
 pdf("outputs/Figs/r8NW.pdf")
@@ -146,7 +141,7 @@ plot(r4min21)
 dev.off()
 
 r4max20[r4max20!=3]<-NA
-pdf("outputs/Figs/r4max21.pdf")
+pdf("outputs/Figs/r4max20.pdf")
 plot(r4max20)
 dev.off()
 
@@ -166,7 +161,7 @@ plot(r8min21)
 dev.off()
 
 r8max20[r8max20!=3]<-NA
-pdf("outputs/Figs/r8max21.pdf")
+pdf("outputs/Figs/r8max20.pdf")
 plot(r8max20)
 dev.off()
 
@@ -230,7 +225,7 @@ poly.r8minMaxEW<-rasterToPolygons(r8minMaxEW,na.rm=TRUE,dissolve=TRUE)
 area(poly.r4minMaxEW) # 193.9766
 area(poly.r8minMaxEW) # 193.9766
 
-## New rasters for Jan revisions
+## New rasters for Jan 2022 revisions
 r4maxW <- raster("outputs/Processed_files/COMBO_TOL_E_W_jan2022_rcp4_lowerUpperEvol.asc")
 proj4string(r4maxW) <- CRS("+init=epsg:4326")
 r8maxW <- raster("outputs/Processed_files/COMBO_TOL_E_W_jan2022_rcp8_lowerUpperEvol.asc")
