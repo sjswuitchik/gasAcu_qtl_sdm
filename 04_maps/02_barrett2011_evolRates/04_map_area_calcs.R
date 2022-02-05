@@ -132,7 +132,7 @@ proj4string(r4NC)<-CRS("+init=epsg:3572")
 poly.r4NC<-rasterToPolygons(r4NC,na.rm=TRUE,dissolve=TRUE)
 
 # Area
-area(poly.r4NC)
+area(poly.r4NC) # 25.10572
 
 #### Areas with new QTL data - July 2021 ####
 r4min3[r4min3!=3]<-NA
