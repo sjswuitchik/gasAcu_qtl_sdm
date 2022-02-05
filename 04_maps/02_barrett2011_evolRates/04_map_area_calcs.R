@@ -1,5 +1,5 @@
 # SM & SJSW 2020
-# Calculate areas from the map rasters (in proportions)
+# Calculate areas from the map rasters 
 
 ###########################################################################################################################
 
