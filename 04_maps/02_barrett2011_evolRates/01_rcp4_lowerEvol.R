@@ -18,7 +18,7 @@ library(viridis)
 #### Barrett rate
 
 #Load raster of combined tolerance and erratic behaviour
-COMBOTEWARM<-raster("outputs/Processed_files/COMBO_TOL_E_W_June20_rcp4_lowerEvol.asc")
+COMBOTEWARM<-raster("outputs/Processed_files/COMBO_TOL_E_W_jan2022_rcp4_lowerEvol.asc")
 
 #Load bathymetry to get coastlines (nc file)
 Bathy<-nc_open("required_files/GEBCO_2014_2D_-179.7777_45.2207_-120.8539_76.3978.nc")
@@ -59,7 +59,7 @@ A<-raster("required_files/SaraUseThis.tif")
 
 ##### Sanderson rate
 #Load raster of combined tolerance and erratic behaviour
-SAN_COMBOTEWARM<-raster("outputs/Processed_files/COMBO_TOL_E_W_jan2022_rcp4_lowerEvol_sanderson.asc")
+#SAN_COMBOTEWARM<-raster("outputs/Processed_files/COMBO_TOL_E_W_jan2022_rcp4_lowerEvol_sanderson.asc")
 
 # set up plot parameters
 
@@ -74,9 +74,9 @@ plot(COMBOTEWARM, add=T, legend=F, at=c(2,3),col=cols[2:3])
 legend("bottomleft",legend=ltext,fill=cols,bg="white")
 dev.off()
 
-# Plot warmer world Sanderson
-pdf("outputs/Figs/rcp4_lowerEvol_warmer_sanderson.pdf")
-plot(D, col="grey",axes=F,legend=F)
-plot(SAN_COMBOTEWARM, add=T, legend=F, at=c(2,3),col=cols[2:3])
-legend("bottomleft",legend=ltext,fill=cols,bg="white")
-dev.off()
+## Plot warmer world Sanderson
+#pdf("outputs/Figs/rcp4_lowerEvol_warmer_sanderson.pdf")
+#plot(D, col="grey",axes=F,legend=F)
+#plot(SAN_COMBOTEWARM, add=T, legend=F, at=c(2,3),col=cols[2:3])
+#legend("bottomleft",legend=ltext,fill=cols,bg="white")
+#dev.off()
