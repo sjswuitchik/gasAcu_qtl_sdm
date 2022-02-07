@@ -57,7 +57,7 @@ A<-raster("required_files/SaraUseThis.tif")
 #new<-unionSpatialPolygons(suit,rep(1,length(suit$Id)))
 
 #### Sanderson 
-SAN_COMBOTEWARM<-raster("outputs/Processed_files/COMBO_TOL_E_W_jan2022_rcp8_lowerUpperEvol_sanderson.asc")
+#SAN_COMBOTEWARM<-raster("outputs/Processed_files/COMBO_TOL_E_W_jan2022_rcp8_lowerUpperEvol_sanderson.asc")
 
 # set up plot parameters
 

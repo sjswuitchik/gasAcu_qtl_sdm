@@ -17,7 +17,7 @@ library(viridis)
 
 #### Barrett + Morgan rates
 #Load raster of combined tolerance and erratic behaviour
-COMBOTEWARM<-raster("outputs/Processed_files/COMBO_TOL_E_W_jan2022_rcp4_lowerUpperEvol.asc")
+COMBOTEWARM<-raster("outputs/Processed_files/COMBO_TOL_E_W_jan2022_rcp4_UpperEvol.asc")
 
 #Load bathymetry to get coastlines (nc file)
 Bathy<-nc_open("required_files/GEBCO_2014_2D_-179.7777_45.2207_-120.8539_76.3978.nc")
@@ -52,13 +52,6 @@ B[B<=0 & B>-200]<-1 #Set values in raster to all the same value
 B[1:1253,]<-NA #Set cells above the Northern extent to 0
 A<-raster("required_files/SaraUseThis.tif")
 
-#For current bathy and sea ice
-#Dissolve polygons together, to form one polygon of possible habitats
-#new<-unionSpatialPolygons(suit,rep(1,length(suit$Id)))
-
-#### Sanderson 
-#SAN_COMBOTEWARM<-raster("outputs/Processed_files/COMBO_TOL_E_W_jan2022_rcp4_lowerUpperEvol_sanderson.asc")
-
 # set up plot parameters
 
 viridis <- viridis_pal(direction = 1, option = "C")
@@ -66,15 +59,8 @@ cols <- viridisLite::viridis(3)
 ltext<-c("Outside Physiol Limits","Within Physiol Limits","Normal Behav") #legend text
 
 #Plot-Warmer World Barrett + Morgan
-pdf("outputs/Figs/rcp4_lowerUpperEvol_warmer.pdf")
+pdf("outputs/Figs/rcp4_UpperEvol_warmer.pdf")
 plot(D, col="grey",axes=F,legend=F)
 plot(COMBOTEWARM, add=T, legend=F, at=c(2,3),col=cols[2:3])
-legend("bottomleft",legend=ltext,fill=cols,bg="white")
-dev.off()
-
-#Plot-Warmer World Sanderson
-pdf("outputs/Figs/rcp4_lowerUpperEvol_warmer.pdf")
-plot(D, col="grey",axes=F,legend=F)
-plot(SAN_COMBOTEWARM, add=T, legend=F, at=c(2,3),col=cols[2:3])
 legend("bottomleft",legend=ltext,fill=cols,bg="white")
 dev.off()
