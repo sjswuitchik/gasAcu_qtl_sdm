@@ -226,9 +226,9 @@ area(poly.r4minMaxEW) # 193.9766
 area(poly.r8minMaxEW) # 193.9766
 
 ## New rasters for Jan 2022 revisions
-r4maxW <- raster("outputs/Processed_files/COMBO_TOL_E_W_jan2022_rcp4_lowerUpperEvol.asc")
+r4maxW <- raster("outputs/Processed_files/COMBO_TOL_E_W_jan2022_rcp4_UpperEvol.asc")
 proj4string(r4maxW) <- CRS("+init=epsg:4326")
-r8maxW <- raster("outputs/Processed_files/COMBO_TOL_E_W_jan2022_rcp8_lowerUpperEvol.asc")
+r8maxW <- raster("outputs/Processed_files/COMBO_TOL_E_W_jan2022_rcp8_UpperEvol.asc")
 proj4string(r8maxW) <- CRS("+init=epsg:4326")
 
 r4maxW[r4maxW!=3]<-NA
@@ -247,5 +247,5 @@ proj4string(r8maxW)<-CRS("+init=epsg:3572")
 poly.r4maxW<-rasterToPolygons(r4maxW,na.rm=TRUE,dissolve=TRUE)
 poly.r8maxW<-rasterToPolygons(r8maxW,na.rm=TRUE,dissolve=TRUE)
 
-area(poly.r4maxW) # 193.9766
-area(poly.r8maxW) # 193.9766
+area(poly.r4maxW) # 152.5273
+area(poly.r8maxW) # 173.2928
