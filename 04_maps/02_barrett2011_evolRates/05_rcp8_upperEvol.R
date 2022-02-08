@@ -17,7 +17,7 @@ library(viridis)
 
 #### Barrett + Morgan rates
 #Load raster of combined tolerance and erratic behaviour
-COMBOTEWARM<-raster("outputs/Processed_files/COMBO_TOL_E_W_jan2022_rcp8_UpperEvol.asc")
+COMBOTEWARM<-raster("outputs/Processed_files/COMBO_TOL_E_W_jan2022_rcp8_upperEvol.asc")
 
 #Load bathymetry to get coastlines (nc file)
 Bathy<-nc_open("required_files/GEBCO_2014_2D_-179.7777_45.2207_-120.8539_76.3978.nc")
