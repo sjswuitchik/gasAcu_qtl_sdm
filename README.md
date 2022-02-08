@@ -1,7 +1,7 @@
-# Threespine Stickleback SDMs with trait integration
+# Evolution of thermal physiology alters projected range of threespine stickleback under climate change
 
 **Authors:**  
-Sara Wuitchik (Postdoctoral Fellow, Harvard University & Boston University, sjswuit@g.harvard.edu)
+Sara Wuitchik (Postdoctoral Fellow, University of Victoria & Simon Fraser University, sjswuit@g.harvard.edu)
 
 Stephanie Mogensen (Ph.D. Candidate, University of Calgary, stephanie.mogensen@ucalgary.ca)
 
@@ -11,13 +11,13 @@ Antoine Paccard (Research Associate, McGill University Genome Center, antoine.pa
 
 Heather A Jamniczky (Associate Professor, University of Calgary, hajamnic@ucalgary.ca)
 
-Rowan DH Barrett (Associate Professor, McGill University, rowan.barrett@mcgill.ca)
+Rowan DH Barrett (Associate Professor, McGill University & Redpath Museum, rowan.barrett@mcgill.ca)
 
-Sean M Rogers (Associate Professor, University of Calgary, srogers@ucalgary.ca)
+Sean M Rogers (Professor, University of Calgary, srogers@ucalgary.ca)
 
 ### What you'll find (and where) in this repository:
 
-Scripts for the QTL analyses and mechanistic species distribution modelling from Evolution of thermal physiology alters species distributions under climate change (*Wuitchik et al., in revision, Mol Ecol*). Currently, these scripts show the general analyses but are not optomized for generalizable or automatic running. There is a small amount of manual editing/combining of files required. The QTL and SDM analyses are completely separate but from the same manuscript.
+Scripts for the QTL analyses and mechanistic species distribution modelling from 'Evolution of thermal physiology alters projected range of threespine stickleback under climate change' (*Wuitchik et al., accepted, Mol Ecol*). Currently, these scripts show the general analyses but are not optomized for generalizable or automatic running. There is a small amount of manual editing/combining of files required. The QTL and SDM analyses are completely separate but from the same manuscript.
 
 
 **01_process_seq:** scripts for processing and filtering ddRAD sequencing data  
