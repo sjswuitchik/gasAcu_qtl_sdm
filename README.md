@@ -1,7 +1,7 @@
 # Evolution of thermal physiology alters projected range of threespine stickleback under climate change
 
 **Authors:**  
-Sara Wuitchik (Postdoctoral Fellow, University of Victoria & Simon Fraser University, sjswuit@g.harvard.edu)
+Sara Smith (Assistant Professor, Mount Royal University, ssmith6@mtroyal.ca)
 
 Stephanie Mogensen (Ph.D. Candidate, University of Calgary, stephanie.mogensen@ucalgary.ca)
 
@@ -17,7 +17,7 @@ Sean M Rogers (Professor, University of Calgary, srogers@ucalgary.ca)
 
 ### What you'll find (and where) in this repository:
 
-Scripts for the QTL analyses and mechanistic species distribution modelling from 'Evolution of thermal physiology alters projected range of threespine stickleback under climate change' (*Wuitchik et al. 2022, Mol Ecol*). Currently, these scripts show the general analyses but are not optomized for generalizable or automatic running. There is a small amount of manual editing/combining of files required. The QTL and SDM analyses are completely separate but from the same manuscript.
+Scripts for the QTL analyses and mechanistic species distribution modelling from 'Evolution of thermal physiology alters projected range of threespine stickleback under climate change' (*Smith et al. 2022, Mol Ecol*). Currently, these scripts show the general analyses but are not optomized for generalizable or automatic running. There is a small amount of manual editing/combining of files required. The QTL and SDM analyses are completely separate but from the same manuscript.
 
 
 **01_process_seq:** scripts for processing and filtering ddRAD sequencing data  
